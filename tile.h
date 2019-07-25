@@ -1,17 +1,19 @@
 #ifndef _TILE_H
 #define _TILE_H
 
-//#include "piece.h"
 #include "info.h"
 #include "piece.h"
+#include "game.h"
+
 
 class Tile {
     Piece * piece;
     int alphabet;
     int num;
-    Colour c;
-    PieceType p;
+    
     public:
+        Colour c;
+        PieceType p;
         Tile();
         Tile(int alphabet, int number, Colour colour, PieceType pieceType);
         ~Tile();

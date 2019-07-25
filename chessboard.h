@@ -8,10 +8,11 @@
 
 class ChessBoard: public Game {
     const int boardSize = 8;
-    std::vector<std::vector<Tile>> chessBoard;
     public:
+        std::vector<std::vector<Tile>> chessBoard;
         ChessBoard();
         ~ChessBoard();
+        void init_empty();
         void init();
         friend std::ostream &operator<<(std::ostream &out, const ChessBoard &cb);
 };

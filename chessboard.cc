@@ -16,14 +16,24 @@ ChessBoard::~ChessBoard() {
 
 }
 
+void ChessBoard::init_empty() {
+    // Create board 
+    for (int height = 0; height < boardSize; ++height) {
+        std::vector<Tile> temptile;
+        for (int width = 0; width < boardSize; ++width) {
+            Tile newTile = {width, height, Colour::NoColour, PieceType::NoPiece};
+            temptile.emplace_back(newTile);
+            } 
+        chessBoard.emplace_back(temptile);
+    }
+}
+
 void ChessBoard::init() {
     // Create board 
     for (int height = 0; height < boardSize; ++height) {
         std::vector<Tile> temptile;
         for (int width = 0; width < boardSize; ++width) {
             if (1 < height && height < 6) {
-                //NoPiece * np = new NoPiece(Colour::NoColour, PieceType::NoPiece);
-                //chessBoard[height][width].placePiece(np);
                 Tile newTile = {width, height, Colour::NoColour, PieceType::NoPiece};
                 temptile.emplace_back(newTile);
             } else if (height == 1) {
@@ -69,57 +79,7 @@ void ChessBoard::init() {
             }
         }
         chessBoard.emplace_back(temptile);
-        //temptile.clear();
     }
-    /* Add pieces to board
-    for (int height = 0; height < boardSize; ++height) {
-        for (int width = 0; width < boardSize; ++width) {
-            if (1 < height && height < 6) {
-                NoPiece * np = new NoPiece(Colour::NoColour, PieceType::NoPiece);
-                chessBoard[height][width].placePiece(np);
-            } else if (height == 1) {
-                Pawn * p = new Pawn(Colour::Black, PieceType::Pawn);
-                chessBoard[height][width].placePiece(p);
-            } else if (height == 6) {
-                Pawn * p = new Pawn(Colour::White, PieceType::Pawn);
-                chessBoard[height][width].placePiece(p);
-            } else if (height == 0){
-                if (width == 0 || width == 7) {
-                     Castle * c = new Castle(Colour::Black, PieceType::Castle);
-                    chessBoard[height][width].placePiece(c);
-                } else if (width == 1 || width == 6) {
-                     Knight * n = new Knight(Colour::Black, PieceType::Knight);
-                    chessBoard[height][width].placePiece(n);
-                }  else  if (width == 2 || width == 5) {
-                     Bishop * b = new Bishop(Colour::Black, PieceType::Bishop);
-                    chessBoard[height][width].placePiece(b);
-                } else  if (width == 3) {
-                    Queen * q = new Queen(Colour::Black, PieceType::Queen);
-                    chessBoard[height][width].placePiece(q);
-                } else  if (width == 4) {
-                    King * k = new King(Colour::Black, PieceType::King);
-                    chessBoard[height][width].placePiece(k);
-                } 
-            } else if (height == 7) {
-                if (width == 0 || width == 7) {
-                     Castle * c = new Castle(Colour::White, PieceType::Castle);
-                    chessBoard[height][width].placePiece(c);
-                } else  if (width == 1 || width == 6) {
-                     Knight * n = new Knight(Colour::White, PieceType::Knight);
-                    chessBoard[height][width].placePiece(n);
-                } else  if (width == 2 || width == 6) {
-                    Bishop * b = new Bishop(Colour::White, PieceType::Bishop);
-                    chessBoard[height][width].placePiece(b);
-                } else  if (width == 3) {
-                    Queen * q = new Queen(Colour::White, PieceType::Queen);
-                    chessBoard[height][width].placePiece(q);
-                } else  if (width == 4) {
-                    King * k = new King(Colour::White, PieceType::King);
-                    chessBoard[height][width].placePiece(k);
-                } 
-            }
-        }
-    } */
 }
 
 std::ostream &operator<<(std::ostream &out, const ChessBoard &cb) {
