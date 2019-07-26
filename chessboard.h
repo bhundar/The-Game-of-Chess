@@ -19,6 +19,7 @@ class ChessBoard: public Game {
 };
 
 bool IsLegal(Tile t1, Tile t2);
+bool IsValid(Tile t1, Tile t2, ChessBoard &cb);
 
 #endif _CHESSBOARD_H
 

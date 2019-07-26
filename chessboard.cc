@@ -179,7 +179,7 @@ bool IsLegal(Tile t1, Tile t2) {
         }
         return false;
     } else if (t1.p  == PieceType::Queen) {
-        if (abs((t1.num - t2.num)/(t1.alphabet - t2.alphabet)) == 1 || t1.num == t2.num || t1.alphabet == t2.alphabet) {
+        if (t1.num == t2.num || t1.alphabet == t2.alphabet || abs((t1.num - t2.num)/(t1.alphabet - t2.alphabet)) == 1) {
             return true;
         }
         return false;
@@ -189,7 +189,9 @@ bool IsLegal(Tile t1, Tile t2) {
         }
         return false;
     } else if (t1.p  == PieceType::Bishop) {
-        if (abs((t1.num - t2.num)/(t1.alphabet - t2.alphabet)) == 1) {
+        if (abs(t1.alphabet - t2.alphabet) == 0) {
+            return false;
+        } else if (abs((t1.num - t2.num)/(t1.alphabet - t2.alphabet)) == 1) {
             return true;
         }
         return false;
@@ -202,27 +204,287 @@ bool IsLegal(Tile t1, Tile t2) {
             return false;
         }
     } else if (t1.p  == PieceType::Pawn) {
-        bool isFirstTurn;
-        if (t1.num == 2) {
-            isFirstTurn = true;
-        } else {
-            isFirstTurn = false;
-        }
-        if (t1.num < t2.num) {
-            if (abs(t1.alphabet - t2.alphabet) == 0) {
-                if (abs(t1.num - t2.num) == 2) {
-                    if (isFirstTurn) {
+        if (t1.c == Colour::Black) {
+            bool isFirstTurn;
+            if (t1.num == 7) {
+                isFirstTurn = true;
+            } else {
+                isFirstTurn = false;
+            }
+            if (t1.num > t2.num) {
+                if (abs(t1.alphabet - t2.alphabet) == 0) {
+                    if (abs(t1.num - t2.num) == 2) {
+                        if (isFirstTurn) {
+                            return true;
+                        } 
+                        return false;
+                    }
+                    if (abs(t1.num - t2.num) == 1) {
                         return true;
                     }
                     return false;
-                }
-                if (abs(t1.num - t2.num) == 1) {
+                } else if (t2.c != Colour::NoColour && t2.c != t1.c) {
                     return true;
+                } else {
+                    return false;
                 }
-                return false;
+            }
+            return false;
+        } else {
+            bool isFirstTurn;
+            if (t1.num == 2) {
+                isFirstTurn = true;
+            } else {
+                isFirstTurn = false;
+            }
+            if (t1.num < t2.num) {
+                if (abs(t1.alphabet - t2.alphabet) == 0) {
+                    if (abs(t1.num - t2.num) == 2) {
+                        if (isFirstTurn) {
+                            return true;
+                        }
+                        return false;
+                    }
+                    if (abs(t1.num - t2.num) == 1) {
+                        return true;
+                    }
+                    return false;
+                } else if (t2.c != Colour::NoColour && t2.c != t1.c) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
             return false;
         }
+    }
+}
+
+bool IsValid(Tile t1, Tile t2, ChessBoard &cb) {
+    if (t1.p == PieceType::King) {
+        if (t2.c != t1.c) {
+            return true;
+        }
         return false;
-    }  
+    } else if (t1.p == PieceType::Queen) {
+        // diagnonal
+        if (t1.num < t2.num && t1.alphabet < t2.alphabet) {
+            for (int i = 0; i < abs(t2.alphabet - t1.alphabet); ++i) {
+                if (i == abs(t2.alphabet - t1.alphabet) - 1) {
+                    if (cb.chessBoard[8-t1.num-i-1][t1.alphabet-1+i+1].c == t1.c) {
+                        return false;
+                    }
+                    return true;
+                }
+                if (cb.chessBoard[8-t1.num-i-1][t1.alphabet-1+i+1].p != PieceType::NoPiece) {
+                    return false;
+                }
+            }
+        } else if (t1.num < t2.num && t1.alphabet > t2.alphabet) {
+            for (int i = 0; i < abs(t2.alphabet - t1.alphabet); ++i) {
+                if (i == abs(t2.alphabet - t1.alphabet) - 1) {
+                    if (cb.chessBoard[8-t1.num-i-1][t1.alphabet-1-i-1].c == t1.c) {
+                        return false;
+                    }
+                    return true;
+                }
+                if (cb.chessBoard[8-t1.num-i-1][t1.alphabet-1-i-1].p != PieceType::NoPiece) {
+                    return false;
+                }
+            }
+        } else if (t1.num > t2.num && t1.alphabet < t2.alphabet) {
+            for (int i = 0; i < abs(t2.alphabet - t1.alphabet); ++i) {
+                if (i == abs(t2.alphabet - t1.alphabet) - 1) {
+                    if (cb.chessBoard[8-t1.num+i+1][t1.alphabet-1+i+1].c == t1.c) {
+                        return false;
+                    }
+                    return true;
+                }
+                if (cb.chessBoard[8-t1.num+i+1][t1.alphabet-1+i+1].p != PieceType::NoPiece) {
+                    return false;
+                }
+            }
+        } else if (t1.num > t2.num && t1.alphabet > t2.alphabet) {
+            for (int i = 0; i < abs(t2.alphabet - t1.alphabet); ++i) {
+                if (i == abs(t2.alphabet - t1.alphabet) - 1) {
+                    if (cb.chessBoard[8-t1.num+i+1][t1.alphabet-1-i-1].c == t1.c) {
+                        return false;
+                    }
+                    return true;
+                }
+                if (cb.chessBoard[8-t1.num+i+1][t1.alphabet-1-i-1].p != PieceType::NoPiece) {
+                    return false;
+                }
+            }
+        } 
+        // vertical
+        // horizontal
+        if (t1.alphabet == t2.alphabet) {
+            if (t1.num < t2.num) {
+                for (int i = 0; i < abs(t2.num - t1.num); ++i) {
+                    if (i == abs(t2.num - t1.num) - 1) {
+                        if (cb.chessBoard[8-t1.num-i-1][t1.alphabet-1].c == t1.c) {
+                            return false;
+                        }
+                        return true;
+                    }
+                    if (cb.chessBoard[8-t1.num-i-1][t1.alphabet-1].p != PieceType::NoPiece) {
+                        return false;
+                    }
+                }
+            } else if (t1.num > t2.num) {
+                for (int i = 0; i < abs(t2.num - t1.num); ++i) {
+                    if (i == abs(t2.num - t1.num) - 1) {
+                        if (cb.chessBoard[8-t1.num+i+1][t1.alphabet-1].c == t1.c) {
+                            return false;
+                        }
+                        return true;
+                    }
+                    if (cb.chessBoard[8-t1.num+i+1][t1.alphabet-1].p != PieceType::NoPiece) {
+                        return false;
+                    }
+                }
+            } 
+        } else if (t1.num == t2.num) {
+            if (t1.alphabet < t2.alphabet) {
+                for (int i = 0; i < abs(t2.alphabet - t1.alphabet); ++i) {
+                    if (i == abs(t2.alphabet - t1.alphabet) - 1) {
+                        if (cb.chessBoard[8-t1.num][t1.alphabet-1+i+1].c == t1.c) {
+                            return false;
+                        }
+                        return true;
+                    }
+                    if (cb.chessBoard[8-t1.num][t1.alphabet-1+i+1].p != PieceType::NoPiece) {
+                        return false;
+                    }
+                }
+            } else if (t1.alphabet > t2.alphabet) {
+                for (int i = 0; i < abs(t2.alphabet - t1.alphabet); ++i) {
+                    if (i == abs(t2.alphabet - t1.alphabet) - 1) {
+                        if (cb.chessBoard[8-t1.num][t1.alphabet-1-i-1].c == t1.c) {
+                            return false;
+                        }
+                        return true;
+                    }
+                    if (cb.chessBoard[8-t1.num][t1.alphabet-1-i-1].p != PieceType::NoPiece) {
+                        return false;
+                    }
+                }
+            } 
+        }
+    } else if (t1.p == PieceType::Bishop) {
+        if (t1.num < t2.num && t1.alphabet < t2.alphabet) {
+            for (int i = 0; i < abs(t2.alphabet - t1.alphabet); ++i) {
+                if (i == abs(t2.alphabet - t1.alphabet) - 1) {
+                    if (cb.chessBoard[8-t1.num-i-1][t1.alphabet-1+i+1].c == t1.c) {
+                        return false;
+                    }
+                    return true;
+                }
+                if (cb.chessBoard[8-t1.num-i-1][t1.alphabet-1+i+1].p != PieceType::NoPiece) {
+                    return false;
+                }
+            }
+        } else if (t1.num < t2.num && t1.alphabet > t2.alphabet) {
+            for (int i = 0; i < abs(t2.alphabet - t1.alphabet); ++i) {
+                if (i == abs(t2.alphabet - t1.alphabet) - 1) {
+                    if (cb.chessBoard[8-t1.num-i-1][t1.alphabet-1-i-1].c == t1.c) {
+                        return false;
+                    }
+                    return true;
+                }
+                if (cb.chessBoard[8-t1.num-i-1][t1.alphabet-1-i-1].p != PieceType::NoPiece) {
+                    return false;
+                }
+            }
+        } else if (t1.num > t2.num && t1.alphabet < t2.alphabet) {
+            for (int i = 0; i < abs(t2.alphabet - t1.alphabet); ++i) {
+                if (i == abs(t2.alphabet - t1.alphabet) - 1) {
+                    if (cb.chessBoard[8-t1.num+i+1][t1.alphabet-1+i+1].c == t1.c) {
+                        return false;
+                    }
+                    return true;
+                }
+                if (cb.chessBoard[8-t1.num+i+1][t1.alphabet-1+i+1].p != PieceType::NoPiece) {
+                    return false;
+                }
+            }
+        } else if (t1.num > t2.num && t1.alphabet > t2.alphabet) {
+            for (int i = 0; i < abs(t2.alphabet - t1.alphabet); ++i) {
+                if (i == abs(t2.alphabet - t1.alphabet) - 1) {
+                    if (cb.chessBoard[8-t1.num+i+1][t1.alphabet-1-i-1].c == t1.c) {
+                        return false;
+                    }
+                    return true;
+                }
+                if (cb.chessBoard[8-t1.num+i+1][t1.alphabet-1-i-1].p != PieceType::NoPiece) {
+                    return false;
+                }
+            }
+        } 
+    } else if (t1.p == PieceType::Knight) {
+        if (t2.c != t1.c) {
+            return true;
+        }
+        return false;
+    } else if (t1.p == PieceType::Castle) {
+        if (t1.alphabet == t2.alphabet) {
+            if (t1.num < t2.num) {
+                for (int i = 0; i < abs(t2.num - t1.num); ++i) {
+                    if (i == abs(t2.num - t1.num) - 1) {
+                        if (cb.chessBoard[8-t1.num-i-1][t1.alphabet-1].c == t1.c) {
+                            return false;
+                        }
+                        return true;
+                    }
+                    if (cb.chessBoard[8-t1.num-i-1][t1.alphabet-1].p != PieceType::NoPiece) {
+                        return false;
+                    }
+                }
+            } else if (t1.num > t2.num) {
+                for (int i = 0; i < abs(t2.num - t1.num); ++i) {
+                    if (i == abs(t2.num - t1.num) - 1) {
+                        if (cb.chessBoard[8-t1.num+i+1][t1.alphabet-1].c == t1.c) {
+                            return false;
+                        }
+                        return true;
+                    }
+                    if (cb.chessBoard[8-t1.num+i+1][t1.alphabet-1].p != PieceType::NoPiece) {
+                        return false;
+                    }
+                }
+            } 
+        } else if (t1.num == t2.num) {
+            if (t1.alphabet < t2.alphabet) {
+                for (int i = 0; i < abs(t2.alphabet - t1.alphabet); ++i) {
+                    if (i == abs(t2.alphabet - t1.alphabet) - 1) {
+                        if (cb.chessBoard[8-t1.num][t1.alphabet-1+i+1].c == t1.c) {
+                            return false;
+                        }
+                        return true;
+                    }
+                    if (cb.chessBoard[8-t1.num][t1.alphabet-1+i+1].p != PieceType::NoPiece) {
+                        return false;
+                    }
+                }
+            } else if (t1.alphabet > t2.alphabet) {
+                for (int i = 0; i < abs(t2.alphabet - t1.alphabet); ++i) {
+                    if (i == abs(t2.alphabet - t1.alphabet) - 1) {
+                        if (cb.chessBoard[8-t1.num][t1.alphabet-1-i-1].c == t1.c) {
+                            return false;
+                        }
+                        return true;
+                    }
+                    if (cb.chessBoard[8-t1.num][t1.alphabet-1-i-1].p != PieceType::NoPiece) {
+                        return false;
+                    }
+                }
+            } 
+        }
+    } else if (t1.p == PieceType::Pawn) {
+        if (t2.c != t1.c) {
+            return true;
+        }
+        return false;
+    }
 }
