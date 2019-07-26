@@ -166,3 +166,63 @@ std::ostream &operator<<(std::ostream &out, const ChessBoard &cb) {
     }
     return out;
 }
+
+bool IsLegal(Tile t1, Tile t2) {
+    if (t1.alphabet > 8 || t2.alphabet > 8 || t1.num > 8 || t2.num > 8 || t1.alphabet < 1 || t2.alphabet < 1 || t1.num < 1 || t2.num < 1) {
+        return false;
+    }
+    if (t1.p == PieceType::King) {
+        if ((abs(t1.alphabet - t2.alphabet) == 1 && abs(t1.num - t2.num) == 1) || 
+            (abs(t1.alphabet - t2.alphabet) == 0 && abs(t1.num - t2.num) == 1) || 
+            (abs(t1.alphabet - t2.alphabet) == 1 && abs(t1.num - t2.num) == 0)){
+            return true;
+        }
+        return false;
+    } else if (t1.p  == PieceType::Queen) {
+        if (abs((t1.num - t2.num)/(t1.alphabet - t2.alphabet)) == 1 || t1.num == t2.num || t1.alphabet == t2.alphabet) {
+            return true;
+        }
+        return false;
+    } else if (t1.p  == PieceType::Castle) {
+        if (t1.num == t2.num || t1.alphabet == t2.alphabet) {
+            return true;
+        }
+        return false;
+    } else if (t1.p  == PieceType::Bishop) {
+        if (abs((t1.num - t2.num)/(t1.alphabet - t2.alphabet)) == 1) {
+            return true;
+        }
+        return false;
+    } else if (t1.p  == PieceType::Knight) {
+        if (abs(t1.alphabet - t2.alphabet) == 1 && abs(t1.num - t2.num) == 2) {
+            return true;
+        } else if (abs(t1.alphabet - t2.alphabet) == 2 && abs(t1.num - t2.num) == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    } else if (t1.p  == PieceType::Pawn) {
+        bool isFirstTurn;
+        if (t1.num == 2) {
+            isFirstTurn = true;
+        } else {
+            isFirstTurn = false;
+        }
+        if (t1.num < t2.num) {
+            if (abs(t1.alphabet - t2.alphabet) == 0) {
+                if (abs(t1.num - t2.num) == 2) {
+                    if (isFirstTurn) {
+                        return true;
+                    }
+                    return false;
+                }
+                if (abs(t1.num - t2.num) == 1) {
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+        return false;
+    }  
+}

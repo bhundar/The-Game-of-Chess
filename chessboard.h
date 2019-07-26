@@ -5,6 +5,7 @@
 #include "tile.h"
 #include "info.h"
 #include <vector>
+#include <cstdlib>
 
 class ChessBoard: public Game {
     const int boardSize = 8;
@@ -16,6 +17,8 @@ class ChessBoard: public Game {
         void init();
         friend std::ostream &operator<<(std::ostream &out, const ChessBoard &cb);
 };
+
+bool IsLegal(Tile t1, Tile t2);
 
 #endif _CHESSBOARD_H
 

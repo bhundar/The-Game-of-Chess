@@ -8,12 +8,11 @@
 
 class Tile {
     Piece * piece;
-    int alphabet;
-    int num;
-    
     public:
         Colour c;
         PieceType p;
+        int alphabet;
+        int num;
         Tile();
         Tile(int alphabet, int number, Colour colour, PieceType pieceType);
         ~Tile();

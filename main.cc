@@ -306,7 +306,43 @@ int main(void) {
                     continue;
                 }
             } else if (inputVector[0] == "move") {
-
+                int x1 = getX(inputVector[1][0]);
+                int y1 = getY(inputVector[1][1]);
+                int x2 = getX(inputVector[2][0]);
+                int y2 = getY(inputVector[2][1]);
+                Tile tile1;
+                Tile tile2;
+                for (int i = 0; i < 8; ++i) {
+                    for (int j = 0; j < 8; ++j) {
+                        if (i == 8 - y1 && j == x1 - 1) {
+                           tile1 = {x1, y1, cb.chessBoard[i][j].c, cb.chessBoard[i][j].p};
+                        }
+                        if (i == 8 - y2 && j == x2 - 1) {
+                           tile2 = {x2, y2, cb.chessBoard[i][j].c, cb.chessBoard[i][j].p};
+                        }
+                    }
+                }
+                if (IsLegal(tile1, tile2)) {
+                    for (int i = 0; i < 8; ++i) {
+                        for (int j = 0; j < 8; ++j) {
+                           if (i == 8 - y1 && j == x1 - 1) {
+                                Tile newT = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                                cb.chessBoard[i][j] = newT;
+                            }
+                            if (i == 8 - y2 && j == x2 - 1) {
+                                Tile newT = {x2, y2, tile1.c, tile1.p};
+                                cb.chessBoard[i][j] = newT;
+                            } 
+                        }
+                    }
+                    cout << cb;
+                    inputVector.clear();
+                    continue;
+                } else {
+                    cout << "Invalid input! Please enter command again!" << endl;
+                    inputVector.clear();
+                    continue;
+                }
             } else {
                 cout << "Invalid input! Please enter command again!" << endl;
                 inputVector.clear();
