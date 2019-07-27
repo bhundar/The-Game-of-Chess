@@ -10,6 +10,7 @@
 class ChessBoard: public Game {
     const int boardSize = 8;
     public:
+        bool hasPawnMovedTwice = false;
         std::vector<std::vector<Tile>> chessBoard;
         ChessBoard();
         ~ChessBoard();
@@ -18,7 +19,7 @@ class ChessBoard: public Game {
         friend std::ostream &operator<<(std::ostream &out, const ChessBoard &cb);
 };
 
-bool IsLegal(Tile t1, Tile t2);
+bool IsLegal(Tile t1, Tile t2, ChessBoard &cb);
 bool IsValid(Tile t1, Tile t2, ChessBoard &cb);
 
 #endif _CHESSBOARD_H

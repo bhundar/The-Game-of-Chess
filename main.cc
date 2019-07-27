@@ -94,6 +94,13 @@ Colour whichColour(string s) {
     }
 }
 
+Colour whichTurn(int alphabet, int num, ChessBoard &cb) {
+    if (cb.chessBoard[8-num][alphabet-1].c == Colour::White) {
+        return Colour::White;
+    }
+    return Colour::Black;
+}
+
 Computer * computerInitialization(int computer) {
     if (computer == 1) {
         return new Computer(1);
@@ -107,10 +114,10 @@ Computer * computerInitialization(int computer) {
 }
 
 int main(void) {
+    bool isWhiteTurn = true;
     string input;
     vector <string> inputVector; 
     ChessBoard cb;
-    bool whiteTurn = true;
     bool invalidSetup = false;
     bool allClear = true;
     int whiteKing = 0;
@@ -130,7 +137,7 @@ int main(void) {
         while (ss >> word) {
             inputVector.emplace_back(word);
         }
-        if (inputVector.size() == 1 || inputVector.size() == 4) {
+        if ((inputVector.size() == 1 || inputVector.size() == 4) && inputVector[0] != "move") {
             if (inputVector[0] == "resign") {
                 break;
             } else if (inputVector[0] == "setup") {
@@ -203,12 +210,22 @@ int main(void) {
                             }
                         } else if (inputVector[1] == "=") {
                             if (inputVector[2] == "black") {
-                                whiteTurn = false;
+                                isWhiteTurn = false;
+                                inputVector.clear();
+                                inputVector.emplace_back("setup");
+                                continue;
+                            } else if (inputVector[2] == "white") {
+                                isWhiteTurn = true;
+                                inputVector.clear();
+                                inputVector.emplace_back("setup");
+                                continue;
+                            } else {
+                                cout << "Invalid input! Please enter command again!" << endl;
                                 inputVector.clear();
                                 inputVector.emplace_back("setup");
                                 continue;
                             }
-                        }
+                        } 
                     } else if (inputVector.size() == 2) {
                         if (inputVector[1] == "done") { 
                             for (int i = 0; i < 8; ++i) {
@@ -306,12 +323,23 @@ int main(void) {
                     continue;
                 }
             } else if (inputVector[0] == "move") {
+                cout << "inside wrong move" << endl;
                 int x1 = getX(inputVector[1][0]);
                 int y1 = getY(inputVector[1][1]);
                 int x2 = getX(inputVector[2][0]);
                 int y2 = getY(inputVector[2][1]);
+                Colour wT = whichTurn(x1, y1, cb);
                 Tile tile1;
                 Tile tile2;
+                if (isWhiteTurn && whichTurn(x1, y1, cb) != Colour::White) {
+                    cout << "Invalid input! It is White's turn!" << endl;
+                    inputVector.clear();
+                    continue;
+                } else if (!isWhiteTurn && whichTurn(x1, y1, cb) != Colour::Black) {
+                    cout << "Invalid input! It is Black's turn!" << endl;
+                    inputVector.clear();
+                    continue;
+                }
                 for (int i = 0; i < 8; ++i) {
                     for (int j = 0; j < 8; ++j) {
                         if (i == 8 - y1 && j == x1 - 1) {
@@ -322,7 +350,7 @@ int main(void) {
                         }
                     }
                 }
-                if (IsLegal(tile1, tile2)) {
+                if (IsLegal(tile1, tile2, cb)) {
                     if (IsValid(tile1, tile2, cb)) {
                         for (int i = 0; i < 8; ++i) {
                             for (int j = 0; j < 8; ++j) {
@@ -335,6 +363,11 @@ int main(void) {
                                     cb.chessBoard[i][j] = newT;
                                 } 
                             }
+                        }
+                        if (isWhiteTurn == true) {
+                            isWhiteTurn = false;
+                        } else if (isWhiteTurn == false) {
+                            isWhiteTurn = true;
                         }
                     } else {
                         cout << "Invalid move! Please enter command again!" << endl;
@@ -354,10 +387,97 @@ int main(void) {
                 inputVector.clear();
                 continue;
             }
-        } else {
-            cout << "Invalid input! Please enter command again!" << endl;
-            inputVector.clear();
-            continue;
+        } else if (inputVector.size() == 4) {
+            if (inputVector[0] == "move") {
+                cout << "inside right move" << endl;
+                int x1 = getX(inputVector[1][0]);
+                int y1 = getY(inputVector[1][1]);
+                int x2 = getX(inputVector[2][0]);
+                int y2 = getY(inputVector[2][1]);
+                PieceType pPiece = whichPiece(inputVector[3]);
+                if (pPiece != PieceType::Castle || pPiece != PieceType::Knight || pPiece != PieceType::Bishop || pPiece != PieceType::Queen) {
+                    cout << "Invalid input! Promotion piece can be either of Rook, Knight, Bishop or Queen!" << endl;
+                    inputVector.clear();
+                    continue;
+                }
+                Colour pColour = whichColour(inputVector[3]);
+                if (isWhiteTurn && pColour != Colour::White) {
+                    cout << "Invalid input! It is White's turn! Promotion piece must be White!" << endl;
+                    inputVector.clear();
+                    continue;
+                } else if (!isWhiteTurn && pColour != Colour::Black) {
+                    cout << "Invalid input! It is Black's turn! Promotion piece must be Black" << endl;
+                    inputVector.clear();
+                    continue;
+                }
+                if (isWhiteTurn && whichTurn(x1, y1, cb) != Colour::White) {
+                    cout << "Invalid input! It is White's turn!" << endl;
+                    inputVector.clear();
+                    continue;
+                } else if (!isWhiteTurn && whichTurn(x1, y1, cb) != Colour::Black) {
+                    cout << "Invalid input! It is Black's turn!" << endl;
+                    inputVector.clear();
+                    continue;
+                }
+                Tile tile1;
+                Tile tile2;
+                for (int i = 0; i < 8; ++i) {
+                    for (int j = 0; j < 8; ++j) {
+                        if (i == 8 - y1 && j == x1 - 1) {
+                           tile1 = {x1, y1, cb.chessBoard[i][j].c, cb.chessBoard[i][j].p};
+                        }
+                        if (i == 8 - y2 && j == x2 - 1) {
+                           tile2 = {x2, y2, cb.chessBoard[i][j].c, cb.chessBoard[i][j].p};
+                        }
+                    }
+                }
+                if (IsLegal(tile1, tile2, cb)) {
+                    if (IsValid(tile1, tile2, cb)) {
+                        for (int i = 0; i < 8; ++i) {
+                            for (int j = 0; j < 8; ++j) {
+                                if (i == 8 - y1 && j == x1 - 1) {
+                                    Tile newT = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                                    cb.chessBoard[i][j] = newT;
+                                }
+                                if (i == 8 - y2 && j == x2 - 1) {
+                                    cout << "coming inside" << endl;
+                                    if (tile1.p == PieceType::Pawn && tile1.c == Colour::White && i == 0) {
+                                        cout << "deep inside" << endl;
+                                        Tile newT = {x2, y2, tile1.c, pPiece};
+                                        cb.chessBoard[i][j] = newT;
+                                    } else if (tile1.p == PieceType::Pawn && tile1.c == Colour::Black && i == 7) {
+                                        Tile newT = {x2, y2, tile1.c, pPiece};
+                                        cb.chessBoard[i][j] = newT;
+                                    } else {
+                                        Tile newT = {x2, y2, tile1.c, tile1.p};
+                                        cb.chessBoard[i][j] = newT;
+                                    } 
+                                } 
+                            }
+                        }
+                        if (isWhiteTurn == true) {
+                            isWhiteTurn = false;
+                         } else if (isWhiteTurn == false) {
+                            isWhiteTurn = true;
+                        }
+                    } else {
+                        cout << "Invalid move! Please enter command again!" << endl;
+                        inputVector.clear();
+                        continue;
+                    }
+                    cout << cb;
+                    inputVector.clear();
+                    continue;
+                } else {
+                    cout << "Invalid move! Please enter command again!" << endl;
+                    inputVector.clear();
+                    continue;
+                }
+            } else {
+                cout << "Invalid input! Please enter command again!" << endl;
+                inputVector.clear();
+                continue;
+            }
         }
     }
     return 0;

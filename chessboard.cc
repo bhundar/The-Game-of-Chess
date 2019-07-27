@@ -167,7 +167,7 @@ std::ostream &operator<<(std::ostream &out, const ChessBoard &cb) {
     return out;
 }
 
-bool IsLegal(Tile t1, Tile t2) {
+bool IsLegal(Tile t1, Tile t2, ChessBoard &cb) {
     if (t1.alphabet > 8 || t2.alphabet > 8 || t1.num > 8 || t2.num > 8 || t1.alphabet < 1 || t2.alphabet < 1 || t1.num < 1 || t2.num < 1) {
         return false;
     }
@@ -203,34 +203,8 @@ bool IsLegal(Tile t1, Tile t2) {
         } else {
             return false;
         }
-    } else if (t1.p  == PieceType::Pawn) {
-        if (t1.c == Colour::Black) {
-            bool isFirstTurn;
-            if (t1.num == 7) {
-                isFirstTurn = true;
-            } else {
-                isFirstTurn = false;
-            }
-            if (t1.num > t2.num) {
-                if (abs(t1.alphabet - t2.alphabet) == 0) {
-                    if (abs(t1.num - t2.num) == 2) {
-                        if (isFirstTurn) {
-                            return true;
-                        } 
-                        return false;
-                    }
-                    if (abs(t1.num - t2.num) == 1) {
-                        return true;
-                    }
-                    return false;
-                } else if (t2.c != Colour::NoColour && t2.c != t1.c) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            return false;
-        } else {
+    } else if (t1.p  == PieceType::Pawn) { 
+        if (t1.c == Colour::White) {
             bool isFirstTurn;
             if (t1.num == 2) {
                 isFirstTurn = true;
@@ -239,25 +213,95 @@ bool IsLegal(Tile t1, Tile t2) {
             }
             if (t1.num < t2.num) {
                 if (abs(t1.alphabet - t2.alphabet) == 0) {
-                    if (abs(t1.num - t2.num) == 2) {
-                        if (isFirstTurn) {
+                    if (abs(t1.num - t2.num) == 1) {
+                        if (t2.p == PieceType::NoPiece) {
+                            return true;
+                        }
+                        return false;
+                    } else if (abs(t1.num - t2.num) == 2) {
+                        if (cb.chessBoard[8 - t1.num - 1][t1.alphabet - 1].p == PieceType::NoPiece &&
+                            cb.chessBoard[8 - t1.num - 2][t1.alphabet - 1].p == PieceType::NoPiece) {
+                                if (isFirstTurn) {
+                                    cb.hasPawnMovedTwice = true;
+                                    return true;
+                                } 
+                                return false; 
+                        }
+                        return false;
+                    }
+                } else if (abs(t1.alphabet - t2.alphabet) == 1) {
+                    if (abs(t1.num - t2.num) == 1) {
+                        if (t2.p == PieceType::NoPiece) {
+                            if (cb.chessBoard[8-t2.num+1][t2.alphabet-1].p == PieceType::Pawn && 
+                                cb.chessBoard[8-t2.num+1][t2.alphabet-1].c == Colour::Black) {
+                                    if (cb.hasPawnMovedTwice == true) {
+                                        cb.hasPawnMovedTwice = false;
+                                        Tile newT = {8-t2.num+1, t2.alphabet-1, Colour::NoColour, PieceType::NoPiece};
+                                        cb.chessBoard[8-t2.num+1][t2.alphabet-1] = newT;
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                        }
+                        if (t2.p != PieceType::NoPiece && t2.c != Colour::White) {
                             return true;
                         }
                         return false;
                     }
-                    if (abs(t1.num - t2.num) == 1) {
-                        return true;
-                    }
-                    return false;
-                } else if (t2.c != Colour::NoColour && t2.c != t1.c) {
-                    return true;
-                } else {
-                    return false;
                 }
+            } else {
+                return false;
             }
-            return false;
+        } else {
+            bool isFirstTurn;
+            if (t1.num == 7) {
+                isFirstTurn = true;
+            } else {
+                isFirstTurn = false;
+            }
+            if (t1.num > t2.num) {
+                if (abs(t1.alphabet - t2.alphabet) == 0) {
+                    if (abs(t1.num - t2.num) == 1) {
+                        if (t2.p == PieceType::NoPiece) {
+                            return true;
+                        }
+                        return false;
+                    } else if (abs(t1.num - t2.num) == 2) {
+                        if (cb.chessBoard[8 - t1.num + 1][t1.alphabet - 1].p == PieceType::NoPiece &&
+                            cb.chessBoard[8 - t1.num + 2][t1.alphabet - 1].p == PieceType::NoPiece) {
+                                if (isFirstTurn) {
+                                    cb.hasPawnMovedTwice = true;
+                                    return true;
+                                }
+                                return false;
+                        }
+                        return false;
+                    }
+                } else if (abs(t1.alphabet - t2.alphabet) == 1) {
+                    if (abs(t1.num - t2.num) == 1) {
+                        if (t2.p == PieceType::NoPiece) {
+                            if (cb.chessBoard[8-t2.num-1][t2.alphabet-1].p == PieceType::Pawn && 
+                                cb.chessBoard[8-t2.num-1][t2.alphabet-1].c == Colour::White) {
+                                    if (cb.hasPawnMovedTwice == true) {
+                                        cb.hasPawnMovedTwice = false;
+                                        Tile newT = {8-t2.num-1, t2.alphabet-1, Colour::NoColour, PieceType::NoPiece};
+                                        cb.chessBoard[8-t2.num-1][t2.alphabet-1] = newT;
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                        }
+                        if (t2.p != PieceType::NoPiece && t2.c != Colour::Black) {
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+            } else {
+                return false;
+            }
         }
-    }
+    } 
 }
 
 bool IsValid(Tile t1, Tile t2, ChessBoard &cb) {
