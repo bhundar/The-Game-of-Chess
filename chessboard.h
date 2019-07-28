@@ -6,14 +6,28 @@
 #include "info.h"
 #include <vector>
 #include <cstdlib>
+#include <algorithm>
 
 class ChessBoard: public Game {
     const int boardSize = 8;
     public:
         bool hasPawnMovedTwice = false;
+        bool castlingWhiteAllowedRight = true;
+        bool castlingWhiteAllowedLeft = true;
+        bool castlingBlackAllowedRight = true;
+        bool castlingBlackAllowedLeft = true;
+        int WhiteKingPosX(ChessBoard &cb);
+        int WhiteKingPosY(ChessBoard &cb);
+        int BlackKingPosX(ChessBoard &cb);
+        int BlackKingPosY(ChessBoard &cb);
+        int getX(char s);
+        int getY(char s);
         std::vector<std::vector<Tile>> chessBoard;
         ChessBoard();
         ~ChessBoard();
+        bool isWhiteCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std::string> inputVector);
+        bool isBlackCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std::string> inputVector);
+        //bool isWhiteCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std::string> inputVector);
         void init_empty();
         void init();
         friend std::ostream &operator<<(std::ostream &out, const ChessBoard &cb);

@@ -9,31 +9,6 @@
 
 using namespace std;
 
-int getX(char s) {
-    if (s == 'a') {
-        return 1;
-    } else if (s == 'b') {
-        return 2;
-    } else if (s == 'c') {
-        return 3;
-    } else if (s == 'd') {
-        return 4;
-    } else if (s == 'e') {
-        return 5;
-    } else if (s == 'f') {
-        return 6;
-    } else if (s == 'g') {
-        return 7;
-    } else if (s == 'h') {
-        return 8;
-    }
-}
-
-int getY(char s) {
-    int row = s - '0';
-    return row;
-}
-
 PieceType whichPiece(string s) {
     if (s == "K") {
         return PieceType::King;
@@ -101,6 +76,66 @@ Colour whichTurn(int alphabet, int num, ChessBoard &cb) {
     return Colour::Black;
 }
 
+string isCastling(string s1, string s2, ChessBoard &cb) {
+    if (cb.getX(s1[0]) == 5 && cb.getY(s1[1]) == 1 && cb.getX(s2[0]) == 7 && cb.getY(s2[1]) == 1) { // White right
+        if (cb.castlingWhiteAllowedRight) {
+                return "wr";
+        }
+        return "no";   
+    } else if (cb.getX(s1[0]) == 5 && cb.getY(s1[1]) == 1 && cb.getX(s2[0]) == 3 && cb.getY(s2[1]) == 1) { // White left
+        if (cb.castlingWhiteAllowedLeft) {
+            return "wl";
+        }
+        return "no";
+    } else if (cb.getX(s1[0]) == 5 && cb.getY(s1[1]) == 8 && cb.getX(s2[0]) == 7 && cb.getY(s2[1]) == 8) { // Black right
+        if (cb.castlingBlackAllowedRight) {
+            return "br";
+        }
+        return "no";
+    } else if (cb.getX(s1[0]) == 5 && cb.getY(s1[1]) == 8 && cb.getX(s2[0]) == 3 && cb.getY(s2[1]) == 8) { // Black left
+        if (cb.castlingBlackAllowedLeft) {
+            return "bl";
+        }
+        return "no";
+    } else {
+        return "no";
+    }
+}
+
+bool isCastlingLegal(string s, ChessBoard &cb) {
+    if (s == "wr") {
+        if (cb.chessBoard[7][4].p == PieceType::King && cb.chessBoard[7][4].c == Colour::White &&
+            cb.chessBoard[7][5].p == PieceType::NoPiece && cb.chessBoard[7][6].p == PieceType::NoPiece &&
+            cb.chessBoard[7][7].p == PieceType::Castle && cb.chessBoard[7][7].c == Colour::White) {
+                return true;
+            }
+            return false;
+    } else if (s == "wl") {
+        if (cb.chessBoard[7][4].p == PieceType::King && cb.chessBoard[7][4].c == Colour::White &&
+            cb.chessBoard[7][3].p == PieceType::NoPiece && cb.chessBoard[7][2].p == PieceType::NoPiece && cb.chessBoard[7][1].p == PieceType::NoPiece &&
+            cb.chessBoard[7][0].p == PieceType::Castle && cb.chessBoard[7][0].c == Colour::White) {
+                return true;
+            }
+            return false;
+    } else if (s == "br") {
+        if (cb.chessBoard[0][4].p == PieceType::King && cb.chessBoard[0][4].c == Colour::Black &&
+            cb.chessBoard[0][5].p == PieceType::NoPiece && cb.chessBoard[0][6].p == PieceType::NoPiece &&
+            cb.chessBoard[0][7].p == PieceType::Castle && cb.chessBoard[0][7].c == Colour::Black) {
+                return true;
+            }
+            return false;
+    } else if (s == "bl") {
+        if (cb.chessBoard[0][4].p == PieceType::King && cb.chessBoard[0][4].c == Colour::Black &&
+            cb.chessBoard[0][3].p == PieceType::NoPiece && cb.chessBoard[0][2].p == PieceType::NoPiece && cb.chessBoard[7][1].p == PieceType::NoPiece &&
+            cb.chessBoard[0][0].p == PieceType::Castle && cb.chessBoard[0][0].c == Colour::Black) {
+                return true;
+            }
+            return false;
+    } else {
+        return false;
+    }
+}
+
 Computer * computerInitialization(int computer) {
     if (computer == 1) {
         return new Computer(1);
@@ -164,19 +199,11 @@ int main(void) {
                                 inputVector.emplace_back("setup");
                                 continue;
                             }
-                            int x = getX(inputVector[3][0]);
-                            int y = getY(inputVector[3][1]);
+                            int x = cb.getX(inputVector[3][0]);
+                            int y = cb.getY(inputVector[3][1]);
                             for (int i = 0; i < 8; ++i) {
                                 for (int j = 0; j < 8; ++j) {
                                     if (i == 8 - y && j == x - 1) {
-                                        PieceType currentP = cb.chessBoard[i][j].p;
-                                        Colour currentC = cb.chessBoard[i][j].c;
-                                        if (currentC == Colour::Black && currentP == PieceType::King) {
-                                            blackKing -= 1;
-                                        }
-                                        if (currentC == Colour::White && currentP == PieceType::King) {
-                                            whiteKing -= 1;
-                                        }
                                         Tile newTile = {i, j, c, p};
                                         cb.chessBoard[i][j] = newTile;
                                         cout << cb;
@@ -194,11 +221,19 @@ int main(void) {
                         }
                     } else if (inputVector.size() == 3) {
                         if (inputVector[1] == "-") {
-                            int x1 = getX(inputVector[2][0]);
-                            int y1 = getY(inputVector[2][1]);
+                            int x1 = cb.getX(inputVector[2][0]);
+                            int y1 = cb.getY(inputVector[2][1]);
                             for (int i = 0; i < 8; ++i) {
                                 for (int j = 0; j < 8; ++j) {
                                     if (i == 8 - y1 && j == x1 - 1) {
+                                        PieceType currentP = cb.chessBoard[i][j].p;
+                                        Colour currentC = cb.chessBoard[i][j].c;
+                                        if (currentC == Colour::Black && currentP == PieceType::King) {
+                                            blackKing -= 1;
+                                        }
+                                        if (currentC == Colour::White && currentP == PieceType::King) {
+                                            whiteKing -= 1;
+                                        }
                                         Tile newT = {i, j, Colour::NoColour, PieceType::NoPiece};
                                         cb.chessBoard[i][j] = newT;
                                         cout << cb;
@@ -323,11 +358,10 @@ int main(void) {
                     continue;
                 }
             } else if (inputVector[0] == "move") {
-                cout << "inside wrong move" << endl;
-                int x1 = getX(inputVector[1][0]);
-                int y1 = getY(inputVector[1][1]);
-                int x2 = getX(inputVector[2][0]);
-                int y2 = getY(inputVector[2][1]);
+                int x1 = cb.getX(inputVector[1][0]);
+                int y1 = cb.getY(inputVector[1][1]);
+                int x2 = cb.getX(inputVector[2][0]);
+                int y2 = cb.getY(inputVector[2][1]);
                 Colour wT = whichTurn(x1, y1, cb);
                 Tile tile1;
                 Tile tile2;
@@ -350,8 +384,128 @@ int main(void) {
                         }
                     }
                 }
+                // Adjust if king or rook hasnt moved 
+                string castTest = isCastling(inputVector[1], inputVector[2], cb);
+                if (isCastlingLegal(castTest, cb)) {
+                    // change chessboard
+                    if (isWhiteTurn && cb.isWhiteCheck(cb, tile1, tile2, inputVector)) {
+                        cout << "Invalid move! White will be in check!" << endl;
+                        cout << cb;;
+                        inputVector.clear();
+                        continue;
+                    } else if (!isWhiteTurn && cb.isBlackCheck(cb, tile1, tile2, inputVector)) {
+                        cout << "Invalid move! Black will be in check!" << endl;
+                        cout << cb;;
+                        inputVector.clear();
+                        continue;
+                    }
+                    Tile t1;
+                    Tile t2;
+                    Tile t3;
+                    Tile t4;
+                    if (castTest == "wr") {
+                        t1 = {5, 1, Colour::NoColour, PieceType::NoPiece};
+                        t2 = {8, 1, Colour::NoColour, PieceType::NoPiece};
+                        t3 = {6, 1, Colour::White, PieceType::Castle};
+                        t4 = {7, 1, Colour::White, PieceType::King};
+                        cb.chessBoard[7][4] = t1;
+                        cb.chessBoard[7][7] = t2;
+                        cb.chessBoard[7][5] = t3;
+                        cb.chessBoard[7][6] = t4;
+                        cb.castlingWhiteAllowedRight = false;
+                    } else if (castTest == "wl") {
+                        t1 = {5, 1, Colour::NoColour, PieceType::NoPiece};
+                        t2 = {1, 1, Colour::NoColour, PieceType::NoPiece};
+                        t3 = {4, 1, Colour::White, PieceType::Castle};
+                        t4 = {3, 1, Colour::White, PieceType::King};
+                        cb.chessBoard[7][4] = t1;
+                        cb.chessBoard[7][0] = t2;
+                        cb.chessBoard[7][3] = t3;
+                        cb.chessBoard[7][2] = t4;
+                        cb.castlingWhiteAllowedLeft = false;
+                    } else if (castTest == "br") {
+                        t1 = {5, 8, Colour::NoColour, PieceType::NoPiece};
+                        t2 = {8, 8, Colour::NoColour, PieceType::NoPiece};
+                        t3 = {6, 8, Colour::Black, PieceType::Castle};
+                        t4 = {7, 8, Colour::Black, PieceType::King};
+                        cb.chessBoard[0][4] = t1;
+                        cb.chessBoard[0][7] = t2;
+                        cb.chessBoard[0][5] = t3;
+                        cb.chessBoard[0][6] = t4;
+                        cb.castlingBlackAllowedRight = false;
+                    } else if (castTest == "bl") {
+                        t1 = {5, 8, Colour::NoColour, PieceType::NoPiece};
+                        t2 = {1, 8, Colour::NoColour, PieceType::NoPiece};
+                        t3 = {4, 8, Colour::Black, PieceType::Castle};
+                        t4 = {3, 8, Colour::Black, PieceType::King};
+                        cb.chessBoard[0][4] = t1;
+                        cb.chessBoard[0][0] = t2;
+                        cb.chessBoard[0][3] = t3;
+                        cb.chessBoard[0][2] = t4;
+                        cb.castlingBlackAllowedLeft = false;;
+                    }
+                    if (isWhiteTurn == true) {
+                            isWhiteTurn = false;
+                        } else if (isWhiteTurn == false) {
+                            isWhiteTurn = true;
+                    }
+                    cout << cb;
+                    inputVector.clear();
+                    continue;
+                } 
                 if (IsLegal(tile1, tile2, cb)) {
                     if (IsValid(tile1, tile2, cb)) {
+                        if (isWhiteTurn && cb.isWhiteCheck(cb, tile1, tile2, inputVector)) {
+                            cout << "Invalid move! White will be in check!" << endl;
+                            cout << cb;;
+                            inputVector.clear();
+                            continue;
+                        } else if (!isWhiteTurn && cb.isBlackCheck(cb, tile1, tile2, inputVector)) {
+                            cout << "Invalid move! Black will be in check!" << endl;
+                            cout << cb;;
+                            inputVector.clear();
+                            continue;
+                        }
+                        for (int i = 0; i < 8; ++i) {
+                            for (int j = 0; j < 8; ++j) {
+                                // Check for castling condition
+                                if (tile1.p == PieceType::King && tile1.c == Colour::White) {
+                                    cb.castlingWhiteAllowedLeft = false;
+                                    cb.castlingWhiteAllowedRight = false;
+                                } else if (tile1.p == PieceType::King && tile1.c == Colour::Black) {
+                                    cb.castlingBlackAllowedRight = false;
+                                    cb.castlingBlackAllowedLeft = false;
+                                } else if (tile1.p == PieceType::Castle && tile1.c == Colour::White && tile1.num == 1 && tile1.alphabet == 1) {
+                                    cb.castlingWhiteAllowedLeft = false;
+                                } else if (tile1.p == PieceType::Castle && tile1.c == Colour::White && tile1.num == 1 && tile1.alphabet == 8) {
+                                    cb.castlingWhiteAllowedRight = false;
+                                } else if (tile1.p == PieceType::Castle && tile1.c == Colour::Black && tile1.num == 8 && tile1.alphabet == 1) {
+                                    cb.castlingBlackAllowedLeft = false;
+                                } else if (tile1.p == PieceType::Castle && tile1.c == Colour::Black && tile1.num == 8 && tile1.alphabet == 8) {
+                                    cb.castlingBlackAllowedRight = false;
+                                }
+                                if (i == 8 - y1 && j == x1 - 1) {
+                                    Tile newT = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                                    cb.chessBoard[i][j] = newT;
+                                }
+                                if (i == 8 - y2 && j == x2 - 1) {
+                                    Tile newT = {x2, y2, tile1.c, tile1.p};
+                                    cb.chessBoard[i][j] = newT;
+                                } 
+                            }
+                        }
+                        // Change turns
+                        if (isWhiteTurn == true) {
+                            isWhiteTurn = false;
+                        } else if (isWhiteTurn == false) {
+                            isWhiteTurn = true;
+                        }
+                    } else {
+                        cout << "Invalid move! Please enter command again!" << endl;
+                        inputVector.clear();
+                        continue;
+                    }
+                    if (!isWhiteTurn && cb.isBlackCheck(cb, tile1, tile2, inputVector)) {
                         for (int i = 0; i < 8; ++i) {
                             for (int j = 0; j < 8; ++j) {
                                 if (i == 8 - y1 && j == x1 - 1) {
@@ -364,15 +518,21 @@ int main(void) {
                                 } 
                             }
                         }
-                        if (isWhiteTurn == true) {
-                            isWhiteTurn = false;
-                        } else if (isWhiteTurn == false) {
-                            isWhiteTurn = true;
+                        cout << "Black is in check!" << endl;
+                    } else if (isWhiteTurn && cb.isWhiteCheck(cb, tile1, tile2, inputVector)) {
+                        for (int i = 0; i < 8; ++i) {
+                            for (int j = 0; j < 8; ++j) {
+                                if (i == 8 - y1 && j == x1 - 1) {
+                                    Tile newT = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                                    cb.chessBoard[i][j] = newT;
+                                }
+                                if (i == 8 - y2 && j == x2 - 1) {
+                                    Tile newT = {x2, y2, tile1.c, tile1.p};
+                                    cb.chessBoard[i][j] = newT;
+                                } 
+                            }
                         }
-                    } else {
-                        cout << "Invalid move! Please enter command again!" << endl;
-                        inputVector.clear();
-                        continue;
+                        cout << "White is in check!" << endl;
                     }
                     cout << cb;
                     inputVector.clear();
@@ -390,12 +550,12 @@ int main(void) {
         } else if (inputVector.size() == 4) {
             if (inputVector[0] == "move") {
                 cout << "inside right move" << endl;
-                int x1 = getX(inputVector[1][0]);
-                int y1 = getY(inputVector[1][1]);
-                int x2 = getX(inputVector[2][0]);
-                int y2 = getY(inputVector[2][1]);
+                int x1 = cb.getX(inputVector[1][0]);
+                int y1 = cb.getY(inputVector[1][1]);
+                int x2 = cb.getX(inputVector[2][0]);
+                int y2 = cb.getY(inputVector[2][1]);
                 PieceType pPiece = whichPiece(inputVector[3]);
-                if (pPiece != PieceType::Castle || pPiece != PieceType::Knight || pPiece != PieceType::Bishop || pPiece != PieceType::Queen) {
+                if (pPiece == PieceType::Pawn || pPiece == PieceType::King) {
                     cout << "Invalid input! Promotion piece can be either of Rook, Knight, Bishop or Queen!" << endl;
                     inputVector.clear();
                     continue;
