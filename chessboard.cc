@@ -124,42 +124,45 @@ std::ostream &operator<<(std::ostream &out, const ChessBoard &cb) {
             // printing chess pieces
             if (height < 8) {
                 if (cb.chessBoard[height][width].getInfo().colour == Colour::White) {
-                if (cb.chessBoard[height][width].getInfo().type == PieceType::Pawn) {
-                    out << "P";
-                } else if (cb.chessBoard[height][width].getInfo().type == PieceType::Castle) {
-                    if (height == 7 && width == 7) {
-                        out << "R";
-                        std::cout << std::endl;
+                    if (cb.chessBoard[height][width].getInfo().type == PieceType::Pawn) {
+                        out << "P";
+                    } else if (cb.chessBoard[height][width].getInfo().type == PieceType::Castle) {
+                        if (height == 7 && width == 7) {
+                            out << "R";
+                            std::cout << std::endl;
+                        } else {
+                            out << "R";
+                        }
+                    } else if (cb.chessBoard[height][width].getInfo().type == PieceType::Knight) {
+                        out << "N";
+                    } else if (cb.chessBoard[height][width].getInfo().type == PieceType::Bishop) {
+                        out << "B";
+                    } else if (cb.chessBoard[height][width].getInfo().type == PieceType::King) {
+                        out << "K";
+                    } else if (cb.chessBoard[height][width].getInfo().type == PieceType::Queen) {
+                        out << "Q";
+                    } 
+                } else if (cb.chessBoard[height][width].getInfo().colour == Colour::Black) {
+                    if (cb.chessBoard[height][width].getInfo().type == PieceType::Pawn) {
+                        out << "p";
+                    } else if (cb.chessBoard[height][width].getInfo().type == PieceType::Castle) {
+                        out << "r";
+                    } else if (cb.chessBoard[height][width].getInfo().type == PieceType::Knight) {
+                        out << "n";
+                    } else if (cb.chessBoard[height][width].getInfo().type == PieceType::Bishop) {
+                        out << "b";
+                    } else if (cb.chessBoard[height][width].getInfo().type == PieceType::King) {
+                        out << "k";
+                    } else if (cb.chessBoard[height][width].getInfo().type == PieceType::Queen) {
+                        out << "q";
+                    }  
+                } else {
+                    if ((height % 2 != 0 && width % 2 == 0) || (height % 2 == 0 &&  width % 2 != 0)) {
+                        out << "-";
                     } else {
-                        out << "R";
+                        out << " ";
                     }
-                    
-                } else if (cb.chessBoard[height][width].getInfo().type == PieceType::Knight) {
-                    out << "N";
-                } else if (cb.chessBoard[height][width].getInfo().type == PieceType::Bishop) {
-                    out << "B";
-                } else if (cb.chessBoard[height][width].getInfo().type == PieceType::King) {
-                    out << "K";
-                } else if (cb.chessBoard[height][width].getInfo().type == PieceType::Queen) {
-                    out << "Q";
-                } 
-            } else if (cb.chessBoard[height][width].getInfo().colour == Colour::Black) {
-                if (cb.chessBoard[height][width].getInfo().type == PieceType::Pawn) {
-                    out << "p";
-                } else if (cb.chessBoard[height][width].getInfo().type == PieceType::Castle) {
-                    out << "r";
-                } else if (cb.chessBoard[height][width].getInfo().type == PieceType::Knight) {
-                    out << "n";
-                } else if (cb.chessBoard[height][width].getInfo().type == PieceType::Bishop) {
-                    out << "b";
-                } else if (cb.chessBoard[height][width].getInfo().type == PieceType::King) {
-                    out << "k";
-                } else if (cb.chessBoard[height][width].getInfo().type == PieceType::Queen) {
-                    out << "q";
-                }  
-            } else {
-                out << "-";
-            }
+                }
             }
         }
         std::cout << std::endl;
@@ -393,6 +396,722 @@ bool ChessBoard::isWhiteCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
         }
     } 
     // Scan Knight Path
+    if (WhiteKingPosX(cb) == 7) {
+        // y alternating, x is 7
+        if (WhiteKingPosY(cb) == 0) {
+            if (cb.chessBoard[2][6].p == PieceType::Knight && cb.chessBoard[2][6].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[1][5].p == PieceType::Knight && cb.chessBoard[1][5].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+        else if (WhiteKingPosY(cb) == 1) {
+            if (cb.chessBoard[0][5].p == PieceType::Knight && cb.chessBoard[0][5].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[2][5].p == PieceType::Knight && cb.chessBoard[2][5].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[3][6].p == PieceType::Knight && cb.chessBoard[3][6].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+        else if (WhiteKingPosY(cb) == 6) {
+            if (cb.chessBoard[4][6].p == PieceType::Knight && cb.chessBoard[4][6].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[5][5].p == PieceType::Knight && cb.chessBoard[5][5].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[7][5].p == PieceType::Knight && cb.chessBoard[7][5].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+        else if (WhiteKingPosY(cb) == 7) {
+            if (cb.chessBoard[5][6].p == PieceType::Knight && cb.chessBoard[5][6].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[6][5].p == PieceType::Knight && cb.chessBoard[6][5].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+        else {
+            if (cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) - 1].p == PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) - 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) - 2].p == PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) - 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) - 1].p == PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) - 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) - 2].p == PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) - 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+    } else if (WhiteKingPosX(cb) == 6) {
+        // y alternating, x is 6
+        if (WhiteKingPosY(cb) == 0) {
+            if (cb.chessBoard[1][4].p == PieceType::Knight && cb.chessBoard[1][4].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[2][5].p == PieceType::Knight && cb.chessBoard[2][5].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[2][7].p == PieceType::Knight && cb.chessBoard[2][7].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (WhiteKingPosY(cb) == 1) {
+            if (cb.chessBoard[0][4].p == PieceType::Knight && cb.chessBoard[0][4].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[2][4].p == PieceType::Knight && cb.chessBoard[2][4].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[3][5].p == PieceType::Knight && cb.chessBoard[3][5].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[3][7].p == PieceType::Knight && cb.chessBoard[3][7].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (WhiteKingPosY(cb) == 6) {
+            if (cb.chessBoard[4][7].p == PieceType::Knight && cb.chessBoard[4][7].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[4][5].p == PieceType::Knight && cb.chessBoard[4][5].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[5][4].p == PieceType::Knight && cb.chessBoard[5][4].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[7][4].p == PieceType::Knight && cb.chessBoard[7][4].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (WhiteKingPosY(cb) == 7) {
+            if (cb.chessBoard[5][7].p == PieceType::Knight && cb.chessBoard[5][7].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[5][5].p == PieceType::Knight && cb.chessBoard[5][5].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[6][4].p == PieceType::Knight && cb.chessBoard[6][4].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else {
+            if (cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) + 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) - 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) - 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) - 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) - 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) + 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+    } else if (WhiteKingPosX(cb) == 1) {
+        // y alternating, x is 1
+        if (WhiteKingPosY(cb) == 0) {
+            if (cb.chessBoard[2][0].p == PieceType::Knight && cb.chessBoard[2][0].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[2][2].p == PieceType::Knight && cb.chessBoard[2][2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[1][3].p == PieceType::Knight && cb.chessBoard[1][3].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (WhiteKingPosY(cb) == 1) {
+            if (cb.chessBoard[3][0].p == PieceType::Knight && cb.chessBoard[3][0].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[3][2].p == PieceType::Knight && cb.chessBoard[3][2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[2][3].p == PieceType::Knight && cb.chessBoard[2][3].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[0][3].p == PieceType::Knight && cb.chessBoard[0][3].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (WhiteKingPosY(cb) == 6) {
+            if (cb.chessBoard[4][0].p == PieceType::Knight && cb.chessBoard[4][0].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[4][2].p == PieceType::Knight && cb.chessBoard[4][2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[5][3].p == PieceType::Knight && cb.chessBoard[5][3].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[7][3].p == PieceType::Knight && cb.chessBoard[7][3].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (WhiteKingPosY(cb) == 7) {
+            if (cb.chessBoard[5][0].p == PieceType::Knight && cb.chessBoard[5][0].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[5][2].p == PieceType::Knight && cb.chessBoard[5][2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[6][3].p == PieceType::Knight && cb.chessBoard[6][3].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else {
+            if (cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) - 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) + 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) + 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) + 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) + 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) - 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+    } else if (WhiteKingPosX(cb) == 0) {
+        // y alternating, x is 0
+        if (WhiteKingPosY(cb) == 0) {
+            if (cb.chessBoard[1][2].p == PieceType::Knight && cb.chessBoard[1][2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[2][1].p == PieceType::Knight && cb.chessBoard[2][1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (WhiteKingPosY(cb) == 1) {
+            if (cb.chessBoard[0][2].p == PieceType::Knight && cb.chessBoard[0][2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[2][2].p == PieceType::Knight && cb.chessBoard[2][2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[3][1].p == PieceType::Knight && cb.chessBoard[3][1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (WhiteKingPosY(cb) == 6) {
+            if (cb.chessBoard[4][1].p == PieceType::Knight && cb.chessBoard[4][1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[5][2].p == PieceType::Knight && cb.chessBoard[5][2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[7][2].p == PieceType::Knight && cb.chessBoard[7][2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (WhiteKingPosY(cb) == 7) {
+            if (cb.chessBoard[5][1].p == PieceType::Knight && cb.chessBoard[5][1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[6][2].p == PieceType::Knight && cb.chessBoard[6][2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else {
+            if (cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) - 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) + 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) + 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) + 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+    } else {
+        if (WhiteKingPosY(cb) == 0) {
+            if (cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) - 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) - 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) + 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) + 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (WhiteKingPosY(cb) == 1) {
+            if (cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) - 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) - 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) + 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) + 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) - 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) + 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (WhiteKingPosY(cb) == 6) {
+            if (cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) - 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) - 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) - 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) + 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) + 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) + 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (WhiteKingPosY(cb) == 7) {
+            if (cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) - 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) - 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) + 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) + 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else {
+            if (cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) - 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) - 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) - 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) + 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) + 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) + 2].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) - 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) + 1].c == Colour::Black) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+    } 
     return false;
 }
 
@@ -559,6 +1278,722 @@ bool ChessBoard::isBlackCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
         }
     } 
     // Scan Knight Path
+    if (BlackKingPosX(cb) == 7) {
+        // y alternating, x is 7
+        if (BlackKingPosY(cb) == 0) {
+            if (cb.chessBoard[2][6].p == PieceType::Knight && cb.chessBoard[2][6].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[1][5].p == PieceType::Knight && cb.chessBoard[1][5].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+        else if (BlackKingPosY(cb) == 1) {
+            if (cb.chessBoard[0][5].p == PieceType::Knight && cb.chessBoard[0][5].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[2][5].p == PieceType::Knight && cb.chessBoard[2][5].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[3][6].p == PieceType::Knight && cb.chessBoard[3][6].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+        else if (BlackKingPosY(cb) == 6) {
+            if (cb.chessBoard[4][6].p == PieceType::Knight && cb.chessBoard[4][6].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[5][5].p == PieceType::Knight && cb.chessBoard[5][5].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[7][5].p == PieceType::Knight && cb.chessBoard[7][5].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+        else if (BlackKingPosY(cb) == 7) {
+            if (cb.chessBoard[5][6].p == PieceType::Knight && cb.chessBoard[5][6].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[6][5].p == PieceType::Knight && cb.chessBoard[6][5].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+        else {
+            if (cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) - 1].p == PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) - 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) - 2].p == PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) - 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) - 1].p == PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) - 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) - 2].p == PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) - 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+    } else if (BlackKingPosX(cb) == 6) {
+        // y alternating, x is 6
+        if (BlackKingPosY(cb) == 0) {
+            if (cb.chessBoard[1][4].p == PieceType::Knight && cb.chessBoard[1][4].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[2][5].p == PieceType::Knight && cb.chessBoard[2][5].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[2][7].p == PieceType::Knight && cb.chessBoard[2][7].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (BlackKingPosY(cb) == 1) {
+            if (cb.chessBoard[0][4].p == PieceType::Knight && cb.chessBoard[0][4].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[2][4].p == PieceType::Knight && cb.chessBoard[2][4].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[3][5].p == PieceType::Knight && cb.chessBoard[3][5].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[3][7].p == PieceType::Knight && cb.chessBoard[3][7].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (BlackKingPosY(cb) == 6) {
+            if (cb.chessBoard[4][7].p == PieceType::Knight && cb.chessBoard[4][7].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[4][5].p == PieceType::Knight && cb.chessBoard[4][5].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[5][4].p == PieceType::Knight && cb.chessBoard[5][4].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[7][4].p == PieceType::Knight && cb.chessBoard[7][4].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (BlackKingPosY(cb) == 7) {
+            if (cb.chessBoard[5][7].p == PieceType::Knight && cb.chessBoard[5][7].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[5][5].p == PieceType::Knight && cb.chessBoard[5][5].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[6][4].p == PieceType::Knight && cb.chessBoard[6][4].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else {
+            if (cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) + 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) - 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) - 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) - 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) - 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) + 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+    } else if (BlackKingPosX(cb) == 1) {
+        // y alternating, x is 1
+        if (BlackKingPosY(cb) == 0) {
+            if (cb.chessBoard[2][0].p == PieceType::Knight && cb.chessBoard[2][0].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[2][2].p == PieceType::Knight && cb.chessBoard[2][2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[1][3].p == PieceType::Knight && cb.chessBoard[1][3].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (BlackKingPosY(cb) == 1) {
+            if (cb.chessBoard[3][0].p == PieceType::Knight && cb.chessBoard[3][0].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[3][2].p == PieceType::Knight && cb.chessBoard[3][2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[2][3].p == PieceType::Knight && cb.chessBoard[2][3].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[0][3].p == PieceType::Knight && cb.chessBoard[0][3].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (BlackKingPosY(cb) == 6) {
+            if (cb.chessBoard[4][0].p == PieceType::Knight && cb.chessBoard[4][0].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[4][2].p == PieceType::Knight && cb.chessBoard[4][2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[5][3].p == PieceType::Knight && cb.chessBoard[5][3].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[7][3].p == PieceType::Knight && cb.chessBoard[7][3].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (BlackKingPosY(cb) == 7) {
+            if (cb.chessBoard[5][0].p == PieceType::Knight && cb.chessBoard[5][0].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[5][2].p == PieceType::Knight && cb.chessBoard[5][2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[6][3].p == PieceType::Knight && cb.chessBoard[6][3].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else {
+            if (cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) - 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) + 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) + 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) + 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) + 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) - 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+    } else if (BlackKingPosX(cb) == 0) {
+        // y alternating, x is 0
+        if (BlackKingPosY(cb) == 0) {
+            if (cb.chessBoard[1][2].p == PieceType::Knight && cb.chessBoard[1][2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[2][1].p == PieceType::Knight && cb.chessBoard[2][1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (BlackKingPosY(cb) == 1) {
+            if (cb.chessBoard[0][2].p == PieceType::Knight && cb.chessBoard[0][2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[2][2].p == PieceType::Knight && cb.chessBoard[2][2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[3][1].p == PieceType::Knight && cb.chessBoard[3][1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (BlackKingPosY(cb) == 6) {
+            if (cb.chessBoard[4][1].p == PieceType::Knight && cb.chessBoard[4][1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[5][2].p == PieceType::Knight && cb.chessBoard[5][2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[7][2].p == PieceType::Knight && cb.chessBoard[7][2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (BlackKingPosY(cb) == 7) {
+            if (cb.chessBoard[5][1].p == PieceType::Knight && cb.chessBoard[5][1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[6][2].p == PieceType::Knight && cb.chessBoard[6][2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else {
+            if (cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) - 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) + 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) + 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) + 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+    } else {
+        if (BlackKingPosY(cb) == 0) {
+            if (cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) - 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) - 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) + 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) + 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (BlackKingPosY(cb) == 1) {
+            if (cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) - 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) - 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) + 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) + 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) - 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) + 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (BlackKingPosY(cb) == 6) {
+            if (cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) - 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) - 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) - 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) + 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) + 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) + 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else if (BlackKingPosY(cb) == 7) {
+            if (cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) - 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) - 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) + 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) + 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        } else {
+            if (cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) - 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) - 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) - 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) - 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) + 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) + 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) + 2].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) - 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) - 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+            if (cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) + 1].c == Colour::White) {
+                Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
+                Tile temp2 = {x2, y2, t1.c, t1.p};
+                cb.chessBoard[8 - y1][x1 - 1] = temp2;
+                cb.chessBoard[8 - y2][x2 - 1] = temp1;
+                return true;
+            }
+        }
+    } 
     return false;
 }
 

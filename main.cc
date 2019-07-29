@@ -149,6 +149,7 @@ Computer * computerInitialization(int computer) {
 }
 
 int main(void) {
+    int turn = 1;
     bool isWhiteTurn = true;
     string input;
     vector <string> inputVector; 
