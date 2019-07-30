@@ -162,6 +162,7 @@ void move(ChessBoard &cb, int x1, int y1, int x2, int y2, Colour wT, Tile tile1,
                         }
                         return;
                     } else if (!isWhiteTurn && cb.isBlackCheck(cb, tile1, tile2, inputVector)) {
+                        cout << "1" << endl;
                         cout << "Invalid move! Black will be in check!" << endl;
                         cout << cb;;
                         inputVector.clear();
@@ -234,15 +235,16 @@ void move(ChessBoard &cb, int x1, int y1, int x2, int y2, Colour wT, Tile tile1,
                             inputVector.clear();
                             if (isCompPlaying) {
                             throw std::exception();
-                        }
+                            }
                             return;
                         } else if (!isWhiteTurn && cb.isBlackCheck(cb, tile1, tile2, inputVector)) {
+                            cout << "2" << endl;
                             cout << "Invalid move! Black will be in check!" << endl;
                             cout << cb;;
                             inputVector.clear();
                             if (isCompPlaying) {
                             throw std::exception();
-                        }
+                            }
                             return;
                         }
                         for (int i = 0; i < 8; ++i) {
@@ -272,6 +274,10 @@ void move(ChessBoard &cb, int x1, int y1, int x2, int y2, Colour wT, Tile tile1,
                                     cb.chessBoard[i][j] = newT;
                                 } 
                             }
+                        }
+                        if (!cb.isWhiteStalemate(cb.WhiteKingPosY(cb), cb.WhiteKingPosX(cb), cb, inputVector)) {
+                            cout << "STALEMATE! DRAW!" << endl;
+                            
                         }
                         // Change turns
                         if (isWhiteTurn == true) {
@@ -556,7 +562,12 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                         bool hasItBeenFoundYet = false;
                         while (!hasItBeenFoundYet) {
                             try {
-                                int rn = rand() % (whitePieces.size() - 1);
+                                int rn;
+                                if (whitePieces.size() != 1) {
+                                    rn = rand() % (whitePieces.size() - 1);
+                                } else {
+                                    rn = 0;
+                                }
                                 cout << "RANDOM NUMBER GENERATED: " << rn << endl;
                                 randInfo TrialPieceToMove = whitePieces[rn];
                                 cout << TrialPieceToMove.i << " " << TrialPieceToMove.j << endl;
@@ -609,7 +620,12 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                         bool hasItBeenFoundYet = false;
                         while (!hasItBeenFoundYet) {
                             try {
-                                int rn = rand() % (blackPieces.size() - 1);
+                                int rn;
+                                if (blackPieces.size() != 1) {
+                                    rn = rand() % (blackPieces.size() - 1);
+                                } else {
+                                    rn = 0;
+                                }
                                 cout << "RANDOM NUMBER GENERATED: " << rn << endl;
                                 randInfo TrialPieceToMove = blackPieces[rn];
                                 cout << TrialPieceToMove.i << " " << TrialPieceToMove.j << endl;
@@ -632,7 +648,7 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
     } else {
         if (colour == "white") {
             cout << "white" << endl;
-            isWhiteTurn = false;
+            //isWhiteTurn = false;
             cout << turn << endl;
             vector <randInfo> whitePieces;
             int turn = 1;
@@ -730,7 +746,7 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
             }
         } else {
             cout << "black" << endl;
-            isWhiteTurn = false;
+            //isWhiteTurn = false;
             int turn = 0;
             vector <randInfo> blackPieces;
             while (true) {
@@ -774,7 +790,12 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                         bool hasItBeenFoundYet = false;
                         while (!hasItBeenFoundYet) {
                             try {
-                                int rn = rand() % (blackPieces.size() - 1);
+                                int rn;
+                                if (blackPieces.size() != 1) {
+                                    rn = rand() % (blackPieces.size() - 1);
+                                } else {
+                                    rn = 0;
+                                }
                                 cout << "RANDOM NUMBER GENERATED: " << rn << endl;
                                 randInfo TrialPieceToMove = blackPieces[rn];
                                 cout << TrialPieceToMove.i << " " << TrialPieceToMove.j << endl;
@@ -897,6 +918,9 @@ int main(void) {
     cout << "To leave a game, type 'resign'" << endl;
     cout << "==============================" << endl;
     while (true) {
+        if (ISSTALEMATE) {
+
+        } 
         getline(cin, input);
         istringstream ss(input);
         string word;

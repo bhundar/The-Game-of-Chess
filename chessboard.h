@@ -13,6 +13,10 @@ class ChessBoard: public Game {
     const int boardSize = 8;
     //GraphicsDisplay * gd;
     public:
+        int whiteScore = 0;
+        int blackScore = 0;
+        bool ISSTALEMATE = false;
+        bool ISCHECKMATE = false;
         bool hasPawnMovedTwice = false;
         bool castlingWhiteAllowedRight = true;
         bool castlingWhiteAllowedLeft = true;
@@ -27,6 +31,8 @@ class ChessBoard: public Game {
         std::vector<std::vector<Tile>> chessBoard;
         ChessBoard();
         ~ChessBoard();
+        bool isWhiteStalemate(int i, int j, ChessBoard &cb, std::vector <std::string> inputVector);
+        bool isBlackStalemate(int i, int j, ChessBoard &cb, std::vector <std::string> inputVector);
         bool isWhiteCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std::string> inputVector);
         bool isBlackCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std::string> inputVector);
         //bool isWhiteCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std::string> inputVector);

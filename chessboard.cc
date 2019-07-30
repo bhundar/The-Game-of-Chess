@@ -245,12 +245,21 @@ int ChessBoard::getY(char s) {
     return row;
 }
 
+
+
+bool ChessBoard::isBlackStalemate(int i, int j, ChessBoard &cb, std::vector <std::string> inputVector) {
+    
+}
+
 bool ChessBoard::isWhiteCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std::string> inputVector) {
     // Temporarily move piece
+    std::cout << "got in func bro" << std::endl;
+    std::cout << inputVector[1][0] << inputVector[1][1] << " " << inputVector[2][0] << inputVector[2][1] << std::endl;
     int x1 = cb.getX(inputVector[1][0]);
     int y1 = cb.getY(inputVector[1][1]);
     int x2 = cb.getX(inputVector[2][0]);
     int y2 = cb.getY(inputVector[2][1]);
+    std::cout << x1 << " " << y1 << ", " << x2 << " " << y2 << std::endl;
     for (int i = 0; i < 8; ++i) {
         for (int j = 0; j < 8; ++j) {
             if (t1.p == PieceType::King && t1.c == Colour::White) {
@@ -279,6 +288,7 @@ bool ChessBoard::isWhiteCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
         }
     }
     // Scan vertically up
+    std::cout << WhiteKingPosY(cb) << std::endl;
     for (int i = 0; i < WhiteKingPosY(cb); ++i) {
         if (cb.chessBoard[WhiteKingPosY(cb) - i - 1][WhiteKingPosX(cb)].p != PieceType::NoPiece) {
             Tile Encounter = {cb.chessBoard[WhiteKingPosY(cb) - i - 1][WhiteKingPosX(cb)].alphabet, cb.chessBoard[WhiteKingPosY(cb) - i - 1][WhiteKingPosX(cb)].num, cb.chessBoard[WhiteKingPosY(cb) - i - 1][WhiteKingPosX(cb)].c, cb.chessBoard[WhiteKingPosY(cb) - i - 1][WhiteKingPosX(cb)].p};
@@ -2373,4 +2383,118 @@ bool IsValid(Tile t1, Tile t2, ChessBoard &cb) {
         }
         return false;
     }
+}
+
+bool ChessBoard::isWhiteStalemate(int i, int j, ChessBoard &cb, std::vector <std::string> inputVector) {
+    std::cout << "in stalemate function" << std::endl;
+    Tile original = cb.chessBoard[i][j];
+    std::cout << inputVector.size() << std::endl;
+    std::cout << i << " here c " << j << std::endl;
+    if (i == 0) {
+        if (j == 0) {
+            if (cb.isWhiteCheck(cb, original, cb.chessBoard[i][j+1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i+1][j+1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i+1][j], inputVector)) {
+                    return true;
+                }
+        } else if (j == 7) {
+            if (cb.isWhiteCheck(cb, original, cb.chessBoard[i][j-1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i+1][j-1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i+1][j], inputVector)) {
+                    return true;
+                }
+        } else {
+            if (cb.isWhiteCheck(cb, original, cb.chessBoard[i][j-1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i+1][j-1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i][j+1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i+1][j+1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i+1][j], inputVector)) {
+                    return true;
+                }
+        }
+    } else if (i == 7) {
+         std::cout << "i is 7" << std::endl;
+        if (j == 0) {
+            std::cout << "in?????????" << std::endl;
+             std::cout << cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j], inputVector) << std::endl;
+             std::cout << cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j+1], inputVector)  << std::endl;
+             std::cout << cb.isWhiteCheck(cb, original, cb.chessBoard[i][j+1], inputVector) << std::endl;
+             std::cout << "j is 0" << std::endl;
+            if (cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j+1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i][j+1], inputVector)) {
+                    return true;
+                }
+        } else if (j == 7) {
+            if  (cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j-1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i][j-1], inputVector)) {
+                    return true;
+                }
+        } else {
+            if (cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j-1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j+1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i][j-1], inputVector)) {
+                    return true;
+                }
+        }
+    } else if (j == 0) {
+        if (i == 0) {
+            if (cb.isWhiteCheck(cb, original, cb.chessBoard[i][j+1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i+1][j+1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i+1][j], inputVector)) {
+                    return true;
+                }
+        } else if (i == 7) {
+            if (cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j+1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i][j+1], inputVector)) {
+                    return true;
+                }
+        } else {
+            if (cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j+1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i][j+1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i+1][j+1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i+1][j], inputVector)) {
+                    return true;
+                }
+        }
+    } else if (j == 7) {
+        if (i == 0) {
+            if (cb.isWhiteCheck(cb, original, cb.chessBoard[i][j-1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i+1][j-1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i+1][j], inputVector)) {
+                    return true;
+                }
+        } else if (i == 7) {
+            if  (cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j-1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i][j-1], inputVector)) {
+                    return true;
+                }
+        } else {
+            if  (cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j-1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i+1][j-1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i+1][j], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i][j-1], inputVector)) {
+                    return true;
+                }
+        }
+    } else {
+        if  (cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j+1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j-1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i][j-1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i][j+1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j-1], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j], inputVector) &&
+                cb.isWhiteCheck(cb, original, cb.chessBoard[i-1][j+1], inputVector)) {
+                    return true;
+                }
+    }
+    return false;
 }
