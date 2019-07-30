@@ -1,5 +1,5 @@
-#ifndef _CHESSBOARD_H
-#define _CHESSBOARD_H
+#ifndef CHESSBOARD_H
+#define CHESSBOARD_H
 #include "piece.h"
 #include "tile.h"
 #include "info.h"
@@ -42,7 +42,7 @@ class ChessBoard{
 bool IsLegal(Tile t1, Tile t2, ChessBoard &cb);
 bool IsValid(Tile t1, Tile t2, ChessBoard &cb);
 
-#endif _CHESSBOARD_H
+#endif
 
 
 

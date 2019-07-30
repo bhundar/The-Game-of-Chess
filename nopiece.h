@@ -1,5 +1,5 @@
-#ifndef _NOPIECE_H
-#define _NOPIECE_H
+#ifndef NOPIECE_H
+#define NOPIECE_H
 
 #include "piece.h"
 
@@ -9,4 +9,4 @@ class NoPiece: public Piece {
         ~NoPiece();
 };
 
-#endif _NOPIECE_H
+#endif

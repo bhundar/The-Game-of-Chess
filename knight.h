@@ -1,5 +1,5 @@
-#ifndef _KNIGHT_H
-#define _KNIGHT_H
+#ifndef KNIGHT_H
+#define KNIGHT_H
 
 #include "piece.h"
 
@@ -9,4 +9,4 @@ class Knight: public Piece {
         ~Knight();
 };
 
-#endif _KNIGHT_H
+#endif

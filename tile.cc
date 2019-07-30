@@ -2,7 +2,7 @@
 
 Tile::Tile() {}
 
-Tile::Tile(int alphabet, int number, Colour colour, PieceType pieceType): alphabet{alphabet}, num{number}, c{colour}, p{pieceType}{}
+Tile::Tile(int alphabet, int number, Colour colour, PieceType pieceType):  c{colour}, p{pieceType}, alphabet{alphabet}, num{number}{}
 
 Tile::~Tile() {
 

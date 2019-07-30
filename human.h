@@ -1,5 +1,5 @@
-#ifndef _HUMAN_H
-#define _HUMAN_H
+#ifndef HUMAN_H
+#define HUMAN_H
 
 #include "player.h"
 
@@ -10,4 +10,4 @@ class Human: public Player {
         void undo() override;
 };
 
-#endif _HUMAN_H
+#endif 

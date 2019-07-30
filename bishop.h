@@ -1,5 +1,5 @@
-#ifndef _BISHOP_H
-#define _BISHOP_H
+#ifndef BISHOP_H
+#define BISHOP_H
 
 #include "piece.h"
 #include "piece.h"
@@ -10,4 +10,4 @@ class Bishop: public Piece {
         ~Bishop();
 };
 
-#endif _BISHOP_H
+#endif

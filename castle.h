@@ -1,5 +1,5 @@
-#ifndef _CASTLE_H
-#define _CASTLE_H
+#ifndef CASTLE_H
+#define CASTLE_H
 
 #include "piece.h"
 
@@ -9,4 +9,4 @@ class Castle: public Piece {
         ~Castle();
 };
 
-#endif _CASTLE_H
+#endif

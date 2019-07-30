@@ -1,5 +1,5 @@
-#ifndef _KING_H
-#define _KING_H
+#ifndef KING_H
+#define KING_H
 
 #include "piece.h"
 
@@ -9,4 +9,4 @@ class King: public Piece {
         ~King();
 };
 
-#endif _KING_H
+#endif

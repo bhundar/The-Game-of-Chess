@@ -1,11 +1,7 @@
 #include "piece.h"
 
-Piece::Piece(Colour colour, PieceType pieceType): pieceType{pieceType}, colour{colour}{}
+Piece::Piece(Colour colour, PieceType pieceType): colour{colour}, pieceType{pieceType}{}
 
 Piece::~Piece() {
 
 }
-
-//bool Piece::canMove() {
-
-//}

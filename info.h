@@ -1,5 +1,5 @@
-#ifndef _INFO_H
-#define _INFO_H
+#ifndef INFO_H
+#define INFO_H
 #include <iostream>
 #include <cstddef>
 
@@ -19,4 +19,4 @@ struct Info {
     Colour colour;
 };
 
-#endif _INFO_H
+#endif

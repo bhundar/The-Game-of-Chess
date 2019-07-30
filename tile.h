@@ -1,11 +1,10 @@
-#ifndef _TILE_H
-#define _TILE_H
+#ifndef TILE_H
+#define TILE_H
 
 #include "info.h"
 #include "piece.h"
 
 class Tile {
-    Piece * piece;
     public:
         Colour c;
         PieceType p;
@@ -19,4 +18,4 @@ class Tile {
 
 };
 
-#endif _TILE_H
+#endif

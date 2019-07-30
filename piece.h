@@ -1,5 +1,5 @@
-#ifndef _PIECE_H
-#define _PIECE_H
+#ifndef PIECE_H
+#define PIECE_H
 
 #include <iostream>
 #include "info.h"
@@ -14,4 +14,4 @@ class Piece {
         //virtual bool canMove() = 0;
 };
 
-#endif _PIECE_H
+#endif

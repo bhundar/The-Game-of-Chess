@@ -325,8 +325,6 @@ void move(ChessBoard &cb, int x1, int y1, int x2, int y2, Colour wT, Tile tile1,
 
 void findAndMove(ChessBoard &cb, int i, int j, Colour colour, PieceType p, vector <string> &inputVector) {
     Tile startingTile = {j + 1, 8 - i, colour, p};
-    int position1, position2;
-    bool test = false;
     bool moved = false;
     // Vertical up
     for (int pos = 0; pos < i; ++pos) {
@@ -828,7 +826,6 @@ int main(void) {
     vector <string> inputVector; 
     ChessBoard cb;
     bool invalidSetup = false;
-    bool allClear = true;
     int whiteKing = 0;
     int blackKing = 0;
     cout << "==============================" << endl;
