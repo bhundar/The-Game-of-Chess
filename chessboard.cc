@@ -2009,6 +2009,7 @@ bool ChessBoard::isBlackCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
 }
 
 bool IsLegal(Tile t1, Tile t2, ChessBoard &cb) {
+    std::cout << "islegal" << std::endl;
     if (t1.alphabet > 8 || t2.alphabet > 8 || t1.num > 8 || t2.num > 8 || t1.alphabet < 1 || t2.alphabet < 1 || t1.num < 1 || t2.num < 1) {
         return false;
     }
