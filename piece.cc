@@ -5,3 +5,4 @@ Piece::Piece(Colour colour, PieceType pieceType): colour{colour}, pieceType{piec
 Piece::~Piece() {
 
 }
+

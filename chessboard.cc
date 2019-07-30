@@ -9,11 +9,11 @@
 #include "nopiece.h"
 
 ChessBoard::ChessBoard() {
-    //gd = new GraphicsDisplay(800);
+
 }
 
 ChessBoard::~ChessBoard() {
-    //delete gd;
+
 }
 
 void ChessBoard::init_empty() {
@@ -368,7 +368,6 @@ bool ChessBoard::isWhiteCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
     int y1 = cb.getY(inputVector[1][1]);
     int x2 = cb.getX(inputVector[2][0]);
     int y2 = cb.getY(inputVector[2][1]);
-    std::cout << x1 << " " << y1 << ", " << x2 << " " << y2 << std::endl;
     for (int i = 0; i < 8; ++i) {
         for (int j = 0; j < 8; ++j) {
             if (t1.p == PieceType::King && t1.c == Colour::White) {
@@ -2482,3 +2481,4 @@ bool IsValid(Tile t1, Tile t2, ChessBoard &cb) {
         return false;
     }
 }
+

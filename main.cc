@@ -751,6 +751,35 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                                 continue;
                             }
                         }
+                    } else if (cLevel1 == 4) {
+                        whitePieces.clear();
+                        for (int i = 0; i < 8; ++ i) {
+                            for (int j = 0; j < 8; ++j) {
+                                if (cb.chessBoard[i][j].c == Colour::White) {
+                                    randInfo ri = {i, j, cb.chessBoard[i][j].p};
+                                    whitePieces.emplace_back(ri);
+                                }
+                            }
+                        }
+                        bool hasItBeenFoundYet = false;
+                        while (!hasItBeenFoundYet) {
+                            try {
+                                int rn;
+                                if (whitePieces.size() != 1) {
+                                    rn = rand() % (whitePieces.size() - 1);
+                                } else {
+                                    rn = 0;
+                                }
+                                randInfo TrialPieceToMove = whitePieces[rn];
+                                findAndMoveLevels(cb, TrialPieceToMove.i, TrialPieceToMove.j, Colour::White, TrialPieceToMove.p, inputVector);
+                                hasItBeenFoundYet = true;
+                                if (foundPiece) {
+                                    foundPiece = false;
+                                }
+                            } catch (std::exception &e) {
+                                continue;
+                            }
+                        }
                     }
                 } else {
                     if (cLevel2 == 1) {
@@ -806,6 +835,35 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                             }
                         }
                     } else if (cLevel2 == 3) {
+                        blackPieces.clear();
+                        for (int i = 0; i < 8; ++ i) {
+                            for (int j = 0; j < 8; ++j) {
+                                if (cb.chessBoard[i][j].c == Colour::Black) {
+                                    randInfo ri = {i, j, cb.chessBoard[i][j].p};
+                                    blackPieces.emplace_back(ri);
+                                }
+                            }
+                        }
+                        bool hasItBeenFoundYet = false;
+                        while (!hasItBeenFoundYet) {
+                            try {
+                                int rn;
+                                if (blackPieces.size() != 1) {
+                                    rn = rand() % (blackPieces.size() - 1);
+                                } else {
+                                    rn = 0;
+                                }
+                                randInfo TrialPieceToMove = blackPieces[rn];
+                                findAndMoveLevels(cb, TrialPieceToMove.i, TrialPieceToMove.j, Colour::Black, TrialPieceToMove.p, inputVector);
+                                hasItBeenFoundYet = true;
+                                if (foundPiece) {
+                                    foundPiece = false;
+                                }
+                            } catch (std::exception &e) {
+                                continue;
+                            }
+                        }
+                    } else if (cLevel2 == 4) {
                         blackPieces.clear();
                         for (int i = 0; i < 8; ++ i) {
                             for (int j = 0; j < 8; ++j) {
@@ -896,6 +954,30 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                             }
                         }
                     } else if (cLevel1 == 3) {
+                        whitePieces.clear();
+                        for (int i = 0; i < 8; ++ i) {
+                            for (int j = 0; j < 8; ++j) {
+                                if (cb.chessBoard[i][j].c == Colour::White) {
+                                    randInfo ri = {i, j, cb.chessBoard[i][j].p};
+                                    whitePieces.emplace_back(ri);
+                                }
+                            }
+                        }
+                        bool hasItBeenFoundYet = false;
+                        while (!hasItBeenFoundYet) {
+                            try {
+                                int rn = rand() % (whitePieces.size() - 1);
+                                randInfo TrialPieceToMove = whitePieces[rn];
+                                findAndMoveLevels(cb, TrialPieceToMove.i, TrialPieceToMove.j, Colour::White, TrialPieceToMove.p, inputVector);
+                                hasItBeenFoundYet = true;
+                                if (foundPiece) {
+                                    foundPiece = false;
+                                }
+                            } catch (std::exception &e) {
+                                continue;
+                            }
+                        }
+                    } else if (cLevel2 == 4) {
                         whitePieces.clear();
                         for (int i = 0; i < 8; ++ i) {
                             for (int j = 0; j < 8; ++j) {
@@ -1016,6 +1098,30 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                             }
                         }
                     } else if (cLevel2 == 3) {
+                        blackPieces.clear();
+                        for (int i = 0; i < 8; ++ i) {
+                            for (int j = 0; j < 8; ++j) {
+                                if (cb.chessBoard[i][j].c == Colour::Black) {
+                                    randInfo ri = {i, j, cb.chessBoard[i][j].p};
+                                    blackPieces.emplace_back(ri);
+                                }
+                            }
+                        }
+                        bool hasItBeenFoundYet = false;
+                        while (!hasItBeenFoundYet) {
+                            try {
+                                int rn = rand() % (blackPieces.size() - 1);
+                                randInfo TrialPieceToMove = blackPieces[rn];
+                                findAndMoveLevels(cb, TrialPieceToMove.i, TrialPieceToMove.j, Colour::Black, TrialPieceToMove.p, inputVector);
+                                hasItBeenFoundYet = true;
+                                if (foundPiece) {
+                                    foundPiece = false;
+                                }
+                            } catch (std::exception &e) {
+                                continue;
+                            }
+                        }
+                    } else if (cLevel2 == 4) {
                         blackPieces.clear();
                         for (int i = 0; i < 8; ++ i) {
                             for (int j = 0; j < 8; ++j) {
@@ -1328,7 +1434,6 @@ int main(void) {
                         inputVector.clear();
                         continue;
                     }
-                    cout << level << " ,level, line 1251," << computerTurn << endl;
                 } else {
                     cout << "Invalid input! Please enter command again!" << endl;
                     inputVector.clear();
@@ -1474,9 +1579,7 @@ int main(void) {
                                     cb.chessBoard[i][j] = newT;
                                 }
                                 if (i == 8 - y2 && j == x2 - 1) {
-                                    cout << "coming inside" << endl;
                                     if (tile1.p == PieceType::Pawn && tile1.c == Colour::White && i == 0) {
-                                        cout << "deep inside" << endl;
                                         Tile newT = {x2, y2, tile1.c, pPiece};
                                         cb.chessBoard[i][j] = newT;
                                     } else if (tile1.p == PieceType::Pawn && tile1.c == Colour::Black && i == 7) {
@@ -1516,3 +1619,4 @@ int main(void) {
     }
     return 0;
 }
+

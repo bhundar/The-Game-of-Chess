@@ -10,7 +10,6 @@
 
 class ChessBoard{
     const int boardSize = 8;
-    //GraphicsDisplay * gd;
     public:
         int whiteScore = 0;
         int blackScore = 0;
@@ -43,8 +42,5 @@ bool IsLegal(Tile t1, Tile t2, ChessBoard &cb);
 bool IsValid(Tile t1, Tile t2, ChessBoard &cb);
 
 #endif
-
-
-
 
 

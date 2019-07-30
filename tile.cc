@@ -19,3 +19,4 @@ void Tile::placePiece(Piece * piece) {
 Info Tile::getInfo() const {
     return Info{alphabet, num, p, c};
 }
+

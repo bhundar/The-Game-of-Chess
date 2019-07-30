@@ -11,3 +11,4 @@ class Human: public Player {
 };
 
 #endif 
+

@@ -10,3 +10,4 @@ class Castle: public Piece {
 };
 
 #endif
+

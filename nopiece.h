@@ -10,3 +10,4 @@ class NoPiece: public Piece {
 };
 
 #endif
+
