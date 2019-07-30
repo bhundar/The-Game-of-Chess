@@ -499,7 +499,11 @@ void findAndMove(ChessBoard &cb, int i, int j, Colour colour, PieceType p, vecto
         }
         break;
     }
-    if (moved == true) return;
+    if (moved == true) {
+        return;
+    } else {
+        throw std::exception();
+    }
 }
 
 void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, bool areBothcomp, vector <string> &inputVector) {
@@ -507,34 +511,99 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
     string input;
     int turn = 1;
     bool foundPiece = false;
+    cout << colour << "input" << endl;
     if (areBothcomp) {
+        cout << "bothcomp" << endl;
         if (colour == "white") {
-            
-        } else {
-            
-        }
-    } else {
-        if (colour == "white") {
-            isWhiteTurn = false;
             while (true) {
                 if (turn % 2 != 0) {
                     if (cLevel1 == 1) {
                         for (int i = 0; i < 8; ++i) {
-                            for (int j = 0; j < 8; ++j) {
-                                if (cb.chessBoard[i][j].c == Colour::White) {
-                                    cout << i << " " << j << endl;
-                                    foundPiece = true;
-                                    findAndMove(cb, i, j, Colour::White, cb.chessBoard[i][j].p, inputVector);
-                                    break;
+                            try {
+                                for (int j = 0; j < 8; ++j) {
+                                    if (j == 8 - 1) throw std::exception();
+                                        try {
+                                            if (cb.chessBoard[i][j].c == Colour::White) {
+                                                cout << i << " " << j << endl;
+                                                foundPiece = true;
+                                                findAndMove(cb, i, j, Colour::White, cb.chessBoard[i][j].p, inputVector);
+                                                break;
+                                            }
+                                        } catch (std::exception &e) {
+                                            continue;
+                                        }
+                                    }
+                                } catch (std::exception &e){
+                                    continue;
                                 }
-                            }
                             if (foundPiece) {
                                 foundPiece = false;
                                 break;
                             }
                         }
-                        //break; for testing
-                        
+                    }
+                } else {
+                    if (cLevel2 == 1) {
+                        for (int i = 0; i < 8; ++i) {
+                            try {
+                                for (int j = 0; j < 8; ++j) {
+                                    if (j == 8 - 1) throw std::exception();
+                                        try {
+                                            if (cb.chessBoard[i][j].c == Colour::Black) {
+                                                cout << i << " " << j << endl;
+                                                foundPiece = true;
+                                                findAndMove(cb, i, j, Colour::Black, cb.chessBoard[i][j].p, inputVector);
+                                                break;
+                                            }
+                                        } catch (std::exception &e) {
+                                            continue;
+                                        }
+                                    }
+                                } catch (std::exception &e){
+                                    continue;
+                                }
+                            if (foundPiece) {
+                                foundPiece = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+                turn += 1;
+            }
+        } else {
+            
+        }
+    } else {
+        if (colour == "white") {
+            cout << "white" << endl;
+            isWhiteTurn = false;
+            while (true) {
+                if (turn % 2 != 0) {
+                    if (cLevel1 == 1) {
+                        for (int i = 0; i < 8; ++i) {
+                            try {
+                                for (int j = 0; j < 8; ++j) {
+                                    if (j == 8 - 1) throw std::exception();
+                                        try {
+                                            if (cb.chessBoard[i][j].c == Colour::White) {
+                                                cout << i << " " << j << endl;
+                                                foundPiece = true;
+                                                findAndMove(cb, i, j, Colour::White, cb.chessBoard[i][j].p, inputVector);
+                                                break;
+                                            }
+                                        } catch (std::exception &e) {
+                                            continue;
+                                        }
+                                    }
+                                } catch (std::exception &e){
+                                    continue;
+                                }
+                            if (foundPiece) {
+                                foundPiece = false;
+                                break;
+                            }
+                        }
                     }
                 } else {
                     getline(cin, input);
@@ -574,7 +643,115 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                 turn += 1;
             }
         } else {
-            
+            cout << "black" << endl;
+            isWhiteTurn = true;
+            while (true) {
+                if (turn % 2 != 0) {
+                    if (cLevel2 == 1) {
+                        for (int i = 0; i < 8; ++i) {
+                            try {
+                                for (int j = 0; j < 8; ++j) {
+                                    if (j == 8 - 1) throw std::exception();
+                                        try {
+                                            if (cb.chessBoard[i][j].c == Colour::Black) {
+                                                cout << i << " " << j << endl;
+                                                foundPiece = true;
+                                                findAndMove(cb, i, j, Colour::Black, cb.chessBoard[i][j].p, inputVector);
+                                                break;
+                                            }
+                                        } catch (std::exception &e) {
+                                            continue;
+                                        }
+                                    }
+                                } catch (std::exception &e){
+                                    continue;
+                                }
+                            if (foundPiece) {
+                                foundPiece = false;
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    getline(cin, input);
+                    istringstream ss(input);
+                    string word;
+                    while (ss >> word) {
+                        inputVector.emplace_back(word);
+                    }
+                    if (inputVector[0] != "move") {
+                        cout << "Invalid input!" << endl;
+                        inputVector.clear();
+                        continue;
+                    }
+                    int x1 = cb.getX(inputVector[1][0]);
+                    int y1 = cb.getY(inputVector[1][1]);
+                    int x2 = cb.getX(inputVector[2][0]);
+                    int y2 = cb.getY(inputVector[2][1]);
+                    Tile tile1;
+                    Tile tile2;
+                    Colour wT = whichTurn(x1, y1, cb);
+                    if (inputVector.size() == 3) {
+                        for (int i = 0; i < 8; ++i) {
+                            for (int j = 0; j < 8; ++j) {
+                                if (i == 8 - y1 && j == x1 - 1) {
+                                    tile1 = {x1, y1, cb.chessBoard[i][j].c, cb.chessBoard[i][j].p};
+                                }
+                                if (i == 8 - y2 && j == x2 - 1) {
+                                    tile2 = {x2, y2, cb.chessBoard[i][j].c, cb.chessBoard[i][j].p};
+                                }
+                            }
+                        }
+                        try {
+                            move(cb, x1, y1, x2, y2, wT, tile1, tile2, isWhiteTurn, inputVector, true);
+                        } catch(std::exception& e) {
+                            continue;
+                        }
+                    } else {
+                        PieceType pPiece = whichPiece(inputVector[3]);
+                        if (pPiece == PieceType::Pawn || pPiece == PieceType::King) {
+                            cout << "Invalid input! Promotion piece can be either of Rook, Knight, Bishop or Queen!" << endl;
+                            inputVector.clear();
+                            return;
+                        }
+                        Colour pColour = whichColour(inputVector[3]);
+                        if (isWhiteTurn && pColour != Colour::White) {
+                            cout << "Invalid input! It is White's turn! Promotion piece must be White!" << endl;
+                            inputVector.clear();
+                            return;
+                        } else if (!isWhiteTurn && pColour != Colour::Black) {
+                            cout << "Invalid input! It is Black's turn! Promotion piece must be Black" << endl;
+                            inputVector.clear();
+                            return;
+                        }
+                        if (isWhiteTurn && whichTurn(x1, y1, cb) != Colour::White) {
+                            cout << "Invalid input! It is White's turn!" << endl;
+                            inputVector.clear();
+                            return;
+                        } else if (!isWhiteTurn && whichTurn(x1, y1, cb) != Colour::Black) {
+                            cout << "Invalid input! It is Black's turn!" << endl;
+                            inputVector.clear();
+                            return;
+                        }
+                        for (int i = 0; i < 8; ++i) {
+                            for (int j = 0; j < 8; ++j) {
+                                if (i == 8 - y1 && j == x1 - 1) {
+                                    tile1 = {x1, y1, cb.chessBoard[i][j].c, cb.chessBoard[i][j].p};
+                                }
+                                if (i == 8 - y2 && j == x2 - 1) {
+                                    tile2 = {x2, y2, cb.chessBoard[i][j].c, cb.chessBoard[i][j].p};
+                                }
+                            }
+                        }
+                        try {
+                            move(cb, x1, y1, x2, y2, wT, tile1, tile2, isWhiteTurn, inputVector, true);
+                        } catch(std::exception& e) {
+                            continue;
+                        }
+                    }
+                }
+                turn += 1;
+            }
         }
     }
 }
@@ -797,7 +974,9 @@ int main(void) {
                     char levelChar = inputVector[2][9];
                     int level = levelChar - '0';
                     if (0 < level &&  level < 5) {
-                        computerTurn = "black";
+                        if (computerTurn != "white") {
+                            computerTurn = "black";
+                        }
                         computerLevel2 = level;
                         isP2Comp = true;
                         Computer * playerTwo = computerInitialization(level);
@@ -829,7 +1008,7 @@ int main(void) {
                     if (isP1Comp && isP2Comp) {
                         playWithComputer(cb, "black", computerLevel1, computerLevel2, true, inputVector);
                     } else {
-                        playWithComputer(cb, "black", 0, computerLevel2, true, inputVector);
+                        playWithComputer(cb, "black", 0, computerLevel2, false, inputVector);
                     }
                 }
             } else if (inputVector[0] == "move") {
