@@ -3,8 +3,6 @@
 
 #include "info.h"
 #include "piece.h"
-#include "game.h"
-
 
 class Tile {
     Piece * piece;

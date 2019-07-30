@@ -1,6 +1,5 @@
 #ifndef _CHESSBOARD_H
 #define _CHESSBOARD_H
-#include "game.h"
 #include "piece.h"
 #include "tile.h"
 #include "info.h"
@@ -9,7 +8,7 @@
 #include <cstdlib>
 #include <algorithm>
 
-class ChessBoard: public Game {
+class ChessBoard{
     const int boardSize = 8;
     //GraphicsDisplay * gd;
     public:
@@ -31,11 +30,10 @@ class ChessBoard: public Game {
         std::vector<std::vector<Tile>> chessBoard;
         ChessBoard();
         ~ChessBoard();
-        bool isWhiteStalemate(int i, int j, ChessBoard &cb, std::vector <std::string> inputVector);
-        bool isBlackStalemate(int i, int j, ChessBoard &cb, std::vector <std::string> inputVector);
+        //bool isWhiteStalemate(int i, int j, ChessBoard &cb, std::vector <std::string> inputVector);
+        //bool isBlackStalemate(int i, int j, ChessBoard &cb, std::vector <std::string> inputVector);
         bool isWhiteCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std::string> inputVector);
         bool isBlackCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std::string> inputVector);
-        //bool isWhiteCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std::string> inputVector);
         void init_empty();
         void init();
         friend std::ostream &operator<<(std::ostream &out, const ChessBoard &cb);

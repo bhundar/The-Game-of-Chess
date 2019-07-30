@@ -137,18 +137,6 @@ bool isCastlingLegal(string s, ChessBoard &cb) {
     }
 }
 
-Computer * computerInitialization(int computer) {
-    if (computer == 1) {
-        return new Computer(1);
-    } else if (computer == 2) {
-        return new Computer(2);
-    } else if (computer == 3) {
-        return new Computer(3);
-    } if (computer == 4) {
-        return new Computer(4);
-    }
-}
-
 void move(ChessBoard &cb, int x1, int y1, int x2, int y2, Colour wT, Tile tile1, Tile tile2, bool &isWhiteTurn, vector <string> &inputVector, bool isCompPlaying) {
     string castTest = isCastling(inputVector[1], inputVector[2], cb);
                 if (isCastlingLegal(castTest, cb)) {
@@ -162,7 +150,6 @@ void move(ChessBoard &cb, int x1, int y1, int x2, int y2, Colour wT, Tile tile1,
                         }
                         return;
                     } else if (!isWhiteTurn && cb.isBlackCheck(cb, tile1, tile2, inputVector)) {
-                        cout << "1" << endl;
                         cout << "Invalid move! Black will be in check!" << endl;
                         cout << cb;;
                         inputVector.clear();
@@ -238,7 +225,6 @@ void move(ChessBoard &cb, int x1, int y1, int x2, int y2, Colour wT, Tile tile1,
                             }
                             return;
                         } else if (!isWhiteTurn && cb.isBlackCheck(cb, tile1, tile2, inputVector)) {
-                            cout << "2" << endl;
                             cout << "Invalid move! Black will be in check!" << endl;
                             cout << cb;;
                             inputVector.clear();
@@ -275,10 +261,11 @@ void move(ChessBoard &cb, int x1, int y1, int x2, int y2, Colour wT, Tile tile1,
                                 } 
                             }
                         }
-                        if (!cb.isWhiteStalemate(cb.WhiteKingPosY(cb), cb.WhiteKingPosX(cb), cb, inputVector)) {
-                            cout << "STALEMATE! DRAW!" << endl;
-                            
-                        }
+                        /*(if (!cb.isWhiteStalemate(cb.WhiteKingPosY(cb), cb.WhiteKingPosX(cb), cb, inputVector)) {
+                            cout << "STALEMATE! GAME OVER! DRAW!" << endl;
+                            cb.ISSTALEMATE = true;
+                            return;
+                        }*/
                         // Change turns
                         if (isWhiteTurn == true) {
                             isWhiteTurn = false;
@@ -337,24 +324,17 @@ void move(ChessBoard &cb, int x1, int y1, int x2, int y2, Colour wT, Tile tile1,
 }
 
 void findAndMove(ChessBoard &cb, int i, int j, Colour colour, PieceType p, vector <string> &inputVector) {
-    cout << "in function" << endl;
     Tile startingTile = {j + 1, 8 - i, colour, p};
-    cout << j + 1 << " " << 8 - i << endl;
     int position1, position2;
     bool test = false;
     bool moved = false;
     // Vertical up
     for (int pos = 0; pos < i; ++pos) {
-        cout << "in loop up" << endl;
         if (cb.chessBoard[i - pos - 1][j].p == PieceType::NoPiece) {
-            cout << "in statement" << endl;
             Tile destinationTile = {j + 1, 8 - (i - pos - 1), Colour::NoColour, PieceType::NoPiece};
-            cout << j + 1 << " " << 8 - (i - pos - 1) << endl;
-            cout << IsLegal(startingTile, destinationTile, cb) << " " << IsValid(startingTile, destinationTile, cb) << endl;
             if (IsLegal(startingTile, destinationTile, cb) && 
                 IsValid(startingTile, destinationTile, cb) 
                 /*!cb.isWhiteCheck(cb, startingTile, destinationTile, inputVector)*/) {
-                cout << "done done done" << endl;
                 cb.chessBoard[8 - destinationTile.num][destinationTile.alphabet - 1] = startingTile;
                 cb.chessBoard[i][j] = destinationTile;
                 cout << cb;
@@ -367,14 +347,9 @@ void findAndMove(ChessBoard &cb, int i, int j, Colour colour, PieceType p, vecto
     if (moved == true) return;
     // Vertical down
     for (int pos = 0; pos < 8 - i - 1; ++pos) {
-        cout << "in loop down" << endl;
         if (cb.chessBoard[i + pos + 1][j].p == PieceType::NoPiece) {
-            cout << "in statement" << endl;
             Tile destinationTile = {j + 1, 8 - (i + pos + 1), Colour::NoColour, PieceType::NoPiece};
-            cout << j + 1 << " " << 8 - (i + pos + 1) << endl;
-            cout << IsLegal(startingTile, destinationTile, cb) << " " << IsValid(startingTile, destinationTile, cb) << endl;
             if (IsLegal(startingTile, destinationTile, cb) && IsValid(startingTile, destinationTile, cb)) {
-                cout << "done done done" << endl;
                 cb.chessBoard[8 - destinationTile.num][destinationTile.alphabet - 1] = startingTile;
                 cb.chessBoard[i][j] = destinationTile;
                 cout << cb;
@@ -387,14 +362,9 @@ void findAndMove(ChessBoard &cb, int i, int j, Colour colour, PieceType p, vecto
     if (moved == true) return;
     // Horizontal right
     for (int pos = 0; pos < 8 - j - 1; ++pos){
-        cout << "in loop of HR" << endl;
         if (cb.chessBoard[i][j + pos + 1].p == PieceType::NoPiece) {
-            cout << "in statement of HR" << endl;
             Tile destinationTile = {pos + 2, 8 - i, Colour::NoColour, PieceType::NoPiece};
-            cout << pos + 2 << " " << 8 - i << endl;
-            cout << IsLegal(startingTile, destinationTile, cb) << " " << IsValid(startingTile, destinationTile, cb) << endl;
             if (IsLegal(startingTile, destinationTile, cb) && IsValid(startingTile, destinationTile, cb)) {
-                cout << "done done done OF HR" << endl;
                 cb.chessBoard[8 - destinationTile.num][destinationTile.alphabet - 1] = startingTile;
                 cb.chessBoard[i][j] = destinationTile;
                 cout << cb;
@@ -407,14 +377,9 @@ void findAndMove(ChessBoard &cb, int i, int j, Colour colour, PieceType p, vecto
     if (moved == true) return;
     // Horizontal left
     for (int pos = 0; pos < j; ++pos){
-        cout << "in loop of HL" << endl;
         if (cb.chessBoard[i][j - pos - 1].p == PieceType::NoPiece) {
-            cout << "in statement of HL" << endl;
             Tile destinationTile = {8 - pos - 1, 8 - i, Colour::NoColour, PieceType::NoPiece};
-            cout << 8 - pos - 1<< " " << 8 - i << endl;
-            cout << IsLegal(startingTile, destinationTile, cb) << " " << IsValid(startingTile, destinationTile, cb) << endl;
             if (IsLegal(startingTile, destinationTile, cb) && IsValid(startingTile, destinationTile, cb)) {
-                cout << "done done done OF HL" << endl;
                 cb.chessBoard[8 - destinationTile.num][destinationTile.alphabet - 1] = startingTile;
                 cb.chessBoard[i][j] = destinationTile;
                 cout << cb;
@@ -427,14 +392,9 @@ void findAndMove(ChessBoard &cb, int i, int j, Colour colour, PieceType p, vecto
     if (moved == true) return;
     // Diagonal Up Right
     for (int pos = 0; pos < min(i, 8 - j - 1); ++pos){
-        cout << "in loop of UR" << endl;
         if (cb.chessBoard[i - pos - 1][j + pos + 1].p == PieceType::NoPiece) {
-            cout << "in statement of UR" << endl;
             Tile destinationTile = {startingTile.alphabet + pos + 1, 8 - (i - pos - 1), Colour::NoColour, PieceType::NoPiece};
-            cout << startingTile.alphabet + pos + 1 << " " << 8 - (i - pos - 1) << endl;
-            cout << IsLegal(startingTile, destinationTile, cb) << " " << IsValid(startingTile, destinationTile, cb) << endl;
             if (IsLegal(startingTile, destinationTile, cb) && IsValid(startingTile, destinationTile, cb)) {
-                cout << "done done done OF UR" << endl;
                 cb.chessBoard[8 - destinationTile.num][destinationTile.alphabet - 1] = startingTile;
                 cb.chessBoard[i][j] = destinationTile;
                 cout << cb;
@@ -447,15 +407,9 @@ void findAndMove(ChessBoard &cb, int i, int j, Colour colour, PieceType p, vecto
     if (moved == true) return;
     // Diagonal Down Right
     for (int pos = 0; pos < min(8 - i - 1, 8 - j - 1); ++pos){
-        cout << "in loop of DR" << endl;
         if (cb.chessBoard[i + pos + 1][j + pos + 1].p == PieceType::NoPiece) {
-            cout << i + pos + 1 << " " << j + pos + 1 << endl;
-            cout << "in statement of DR" << endl;
             Tile destinationTile = {startingTile.alphabet+ 1, 8 - i - 1, Colour::NoColour, PieceType::NoPiece};
-            cout << startingTile.alphabet+ 1 << " " << 8 - i - 1 << endl;
-            cout << IsLegal(startingTile, destinationTile, cb) << " " << IsValid(startingTile, destinationTile, cb) << endl;
             if (IsLegal(startingTile, destinationTile, cb) && IsValid(startingTile, destinationTile, cb)) {
-                cout << "done done done OF DR" << endl;
                 cb.chessBoard[8 - destinationTile.num][destinationTile.alphabet - 1] = startingTile;
                 cb.chessBoard[i][j] = destinationTile;
                 cout << cb;
@@ -468,14 +422,9 @@ void findAndMove(ChessBoard &cb, int i, int j, Colour colour, PieceType p, vecto
     if (moved == true) return;
     // Diagonal Down Left
     for (int pos = 0; pos < min(8 - i - 1, j); ++pos){
-        cout << "in loop of DL" << endl;
         if (cb.chessBoard[i + pos + 1][j - pos - 1].p == PieceType::NoPiece) {
-            cout << "in statement of DL" << endl;
             Tile destinationTile = {8 - pos - 1, 8 - i - 1, Colour::NoColour, PieceType::NoPiece};
-            cout << 8 - pos - 1 << " " << 8 - i - 1<< endl;
-            cout << IsLegal(startingTile, destinationTile, cb) << " " << IsValid(startingTile, destinationTile, cb) << endl;
             if (IsLegal(startingTile, destinationTile, cb) && IsValid(startingTile, destinationTile, cb)) {
-                cout << "done done done OF DL" << endl;
                 cb.chessBoard[8 - destinationTile.num][destinationTile.alphabet - 1] = startingTile;
                 cb.chessBoard[i][j] = destinationTile;
                 cout << cb;
@@ -488,14 +437,9 @@ void findAndMove(ChessBoard &cb, int i, int j, Colour colour, PieceType p, vecto
     if (moved == true) return;
     // Diagonal Up Left
     for (int pos = 0; pos < min(i, j); ++pos){
-        cout << "in loop of UL" << endl;
         if (cb.chessBoard[i - pos - 1][j - pos - 1].p == PieceType::NoPiece) {
-            cout << "in statement of UL" << endl;
             Tile destinationTile = {8 - pos - 1, 8 - (i - pos - 1), Colour::NoColour, PieceType::NoPiece};
-            cout << 8 - pos - 1<< " " << 8 - (i - pos - 1)<< endl;
-            cout << IsLegal(startingTile, destinationTile, cb) << " " << IsValid(startingTile, destinationTile, cb) << endl;
             if (IsLegal(startingTile, destinationTile, cb) && IsValid(startingTile, destinationTile, cb)) {
-                cout << "done done done OF UL" << endl;
                 cb.chessBoard[8 - destinationTile.num][destinationTile.alphabet - 1] = startingTile;
                 cb.chessBoard[i][j] = destinationTile;
                 cout << cb;
@@ -517,9 +461,7 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
     string input;
     int turn = 1;
     bool foundPiece = false;
-    cout << colour << "input" << endl;
     if (areBothcomp) {
-        cout << "bothcomp" << endl;
         vector <randInfo> whitePieces;
         vector <randInfo> blackPieces;
         if (colour == "white") {
@@ -532,7 +474,6 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                                     if (j == 8 - 1) throw std::exception();
                                         try {
                                             if (cb.chessBoard[i][j].c == Colour::White) {
-                                                cout << i << " " << j << endl;
                                                 foundPiece = true;
                                                 findAndMove(cb, i, j, Colour::White, cb.chessBoard[i][j].p, inputVector);
                                                 break;
@@ -568,9 +509,7 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                                 } else {
                                     rn = 0;
                                 }
-                                cout << "RANDOM NUMBER GENERATED: " << rn << endl;
                                 randInfo TrialPieceToMove = whitePieces[rn];
-                                cout << TrialPieceToMove.i << " " << TrialPieceToMove.j << endl;
                                 findAndMove(cb, TrialPieceToMove.i, TrialPieceToMove.j, Colour::White, TrialPieceToMove.p, inputVector);
                                 hasItBeenFoundYet = true;
                                 if (foundPiece) {
@@ -589,7 +528,6 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                                     if (j == 8 - 1) throw std::exception();
                                         try {
                                             if (cb.chessBoard[i][j].c == Colour::Black) {
-                                                cout << i << " " << j << endl;
                                                 foundPiece = true;
                                                 findAndMove(cb, i, j, Colour::Black, cb.chessBoard[i][j].p, inputVector);
                                                 break;
@@ -610,7 +548,6 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                         blackPieces.clear();
                         for (int i = 0; i < 8; ++ i) {
                             for (int j = 0; j < 8; ++j) {
-                                cout <<"inside black here loop" << endl;
                                 if (cb.chessBoard[i][j].c == Colour::Black) {
                                     randInfo ri = {i, j, cb.chessBoard[i][j].p};
                                     blackPieces.emplace_back(ri);
@@ -626,9 +563,7 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                                 } else {
                                     rn = 0;
                                 }
-                                cout << "RANDOM NUMBER GENERATED: " << rn << endl;
                                 randInfo TrialPieceToMove = blackPieces[rn];
-                                cout << TrialPieceToMove.i << " " << TrialPieceToMove.j << endl;
                                 findAndMove(cb, TrialPieceToMove.i, TrialPieceToMove.j, Colour::Black, TrialPieceToMove.p, inputVector);
                                 hasItBeenFoundYet = true;
                                 if (foundPiece) {
@@ -647,22 +582,18 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
         }
     } else {
         if (colour == "white") {
-            cout << "white" << endl;
             //isWhiteTurn = false;
-            cout << turn << endl;
             vector <randInfo> whitePieces;
             int turn = 1;
             while (true) {
                 if (turn % 2 != 0) {
                     if (cLevel1 == 1) {
-                        cout << "level1" << endl;
                         for (int i = 0; i < 8; ++i) {
                             try {
                                 for (int j = 0; j < 8; ++j) {
                                     if (j == 8 - 1) throw std::exception();
                                         try {
                                             if (cb.chessBoard[i][j].c == Colour::White) {
-                                                cout << i << " " << j << endl;
                                                 foundPiece = true;
                                                 findAndMove(cb, i, j, Colour::White, cb.chessBoard[i][j].p, inputVector);
                                                 break;
@@ -680,7 +611,6 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                             }
                         }
                     } else if (cLevel1 == 2) {
-                        cout << "here" << endl;
                         whitePieces.clear();
                         for (int i = 0; i < 8; ++ i) {
                             for (int j = 0; j < 8; ++j) {
@@ -694,9 +624,7 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                         while (!hasItBeenFoundYet) {
                             try {
                                 int rn = rand() % (whitePieces.size() - 1);
-                                cout << "RANDOM NUMBER GENERATED: " << rn << endl;
                                 randInfo TrialPieceToMove = whitePieces[rn];
-                                cout << TrialPieceToMove.i << " " << TrialPieceToMove.j << endl;
                                 findAndMove(cb, TrialPieceToMove.i, TrialPieceToMove.j, Colour::White, TrialPieceToMove.p, inputVector);
                                 hasItBeenFoundYet = true;
                                 if (foundPiece) {
@@ -745,7 +673,6 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                 turn += 1;
             }
         } else {
-            cout << "black" << endl;
             //isWhiteTurn = false;
             int turn = 0;
             vector <randInfo> blackPieces;
@@ -758,7 +685,6 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                                     if (j == 8 - 1) throw std::exception();
                                         try {
                                             if (cb.chessBoard[i][j].c == Colour::Black) {
-                                                cout << i << " " << j << endl;
                                                 foundPiece = true;
                                                 findAndMove(cb, i, j, Colour::Black, cb.chessBoard[i][j].p, inputVector);
                                                 break;
@@ -776,11 +702,9 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                             }
                         }
                     } else if (cLevel2 == 2) {
-                        cout << "here" << endl;
                         blackPieces.clear();
                         for (int i = 0; i < 8; ++ i) {
                             for (int j = 0; j < 8; ++j) {
-                                cout <<"inside black here loop" << endl;
                                 if (cb.chessBoard[i][j].c == Colour::Black) {
                                     randInfo ri = {i, j, cb.chessBoard[i][j].p};
                                     blackPieces.emplace_back(ri);
@@ -796,9 +720,7 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                                 } else {
                                     rn = 0;
                                 }
-                                cout << "RANDOM NUMBER GENERATED: " << rn << endl;
                                 randInfo TrialPieceToMove = blackPieces[rn];
-                                cout << TrialPieceToMove.i << " " << TrialPieceToMove.j << endl;
                                 findAndMove(cb, TrialPieceToMove.i, TrialPieceToMove.j, Colour::Black, TrialPieceToMove.p, inputVector);
                                 hasItBeenFoundYet = true;
                                 if (foundPiece) {
@@ -917,10 +839,16 @@ int main(void) {
     cout << "To enter setup mode, type 'setup'" << endl;
     cout << "To leave a game, type 'resign'" << endl;
     cout << "==============================" << endl;
-    while (true) {
-        if (ISSTALEMATE) {
-
-        } 
+    while (true) { 
+        /*
+        if (cb.ISSTALEMATE) {
+            cb.whiteScore += 1;
+            cb.blackScore += 1;
+            cb.ISSTALEMATE = false;
+            inputVector.clear();
+            cb.init();
+            continue;
+        }*/
         getline(cin, input);
         istringstream ss(input);
         string word;
@@ -1080,7 +1008,6 @@ int main(void) {
             if (inputVector[0] == "game") {
                 // Initialize Player 1
                 if (inputVector[1] == "human") {
-                    Human * playerOne = new Human();
                 } else if (inputVector[1].substr(0, 8) == "computer") {
                     char levelChar = inputVector[1][9];
                     int level = levelChar - '0';
@@ -1088,7 +1015,6 @@ int main(void) {
                         computerTurn = "white";
                         computerLevel1 = level;
                         isP1Comp = true;
-                        Computer * playerOne = computerInitialization(level);
                     } else {
                         cout << "Invalid input! Please enter command again!" << endl;
                         inputVector.clear();
@@ -1101,7 +1027,6 @@ int main(void) {
                 }
                 // Initialize Player 2 
                 if (inputVector[2] == "human") {
-                    Human * playerTwo = new Human();
                     inputVector.clear();
                     setupTurn = false;
                     if (didIjustSetup) {
@@ -1119,7 +1044,6 @@ int main(void) {
                         }
                         computerLevel2 = level;
                         isP2Comp = true;
-                        Computer * playerTwo = computerInitialization(level);
                         inputVector.clear();
                         setupTurn = false;
                         if (didIjustSetup) {
