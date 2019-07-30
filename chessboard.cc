@@ -9,11 +9,11 @@
 #include "nopiece.h"
 
 ChessBoard::ChessBoard() {
-
+    //gd = new GraphicsDisplay(800);
 }
 
 ChessBoard::~ChessBoard() {
-
+    //delete gd;
 }
 
 void ChessBoard::init_empty() {
@@ -38,42 +38,54 @@ void ChessBoard::init() {
                 temptile.emplace_back(newTile);
             } else if (height == 1) {
                 Tile newTile = {width, height, Colour::Black, PieceType::Pawn};
+                //gd->notify(height, width, Colour::Black, PieceType::Pawn);
                 temptile.emplace_back(newTile);
             } else if (height == 6) {
                 Tile newTile = {width, height, Colour::White, PieceType::Pawn};
+                //gd->notify(height, width, Colour::White, PieceType::Pawn);
                 temptile.emplace_back(newTile);
             } else if (height == 0){
                 if (width == 0 || width == 7) {
                     Tile newTile = {width, height, Colour::Black, PieceType::Castle};
+                    //gd->notify(height, width, Colour::Black, PieceType::Castle);
                     temptile.emplace_back(newTile);
                 } else if (width == 1 || width == 6) {
                     Tile newTile = {width, height, Colour::Black, PieceType::Knight};
+                    //gd->notify(height, width, Colour::Black, PieceType::Knight);
                     temptile.emplace_back(newTile);
                 }  else  if (width == 2 || width == 5) {
                     Tile newTile = {width, height, Colour::Black, PieceType::Bishop};
+                    //gd->notify(height, width, Colour::Black, PieceType::Bishop);
                     temptile.emplace_back(newTile);
                 } else  if (width == 3) {
                     Tile newTile = {width, height, Colour::Black, PieceType::Queen};
+                    //gd->notify(height, width, Colour::Black, PieceType::Queen);
                     temptile.emplace_back(newTile);
                 } else  if (width == 4) {
                     Tile newTile = {width, height, Colour::Black, PieceType::King};
+                    //gd->notify(height, width, Colour::Black, PieceType::King);
                     temptile.emplace_back(newTile);
                 } 
             } else if (height == 7) {
                 if (width == 0 || width == 7) {
                     Tile newTile = {width, height, Colour::White, PieceType::Castle};
+                    //gd->notify(height, width, Colour::White, PieceType::Castle);
                     temptile.emplace_back(newTile);
                 } else  if (width == 1 || width == 6) {
                     Tile newTile = {width, height, Colour::White, PieceType::Knight};
+                    //gd->notify(height, width, Colour::White, PieceType::Knight);
                     temptile.emplace_back(newTile);
                 } else  if (width == 2 || width == 5) {
                     Tile newTile = {width, height, Colour::White, PieceType::Bishop};
+                    //gd->notify(height, width, Colour::White, PieceType::Bishop);
                     temptile.emplace_back(newTile);
                 } else  if (width == 3) {
                     Tile newTile = {width, height, Colour::White, PieceType::Queen};
+                    //gd->notify(height, width, Colour::White, PieceType::Queen);
                     temptile.emplace_back(newTile);
                 } else  if (width == 4) {
                     Tile newTile = {width, height, Colour::White, PieceType::King};
+                    //gd->notify(height, width, Colour::White, PieceType::King);
                     temptile.emplace_back(newTile);
                 } 
             }
@@ -268,7 +280,6 @@ bool ChessBoard::isWhiteCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
     }
     // Scan vertically up
     for (int i = 0; i < WhiteKingPosY(cb); ++i) {
-        std::cout << "up" << std::endl;
         if (cb.chessBoard[WhiteKingPosY(cb) - i - 1][WhiteKingPosX(cb)].p != PieceType::NoPiece) {
             Tile Encounter = {cb.chessBoard[WhiteKingPosY(cb) - i - 1][WhiteKingPosX(cb)].alphabet, cb.chessBoard[WhiteKingPosY(cb) - i - 1][WhiteKingPosX(cb)].num, cb.chessBoard[WhiteKingPosY(cb) - i - 1][WhiteKingPosX(cb)].c, cb.chessBoard[WhiteKingPosY(cb) - i - 1][WhiteKingPosX(cb)].p};
             Tile WhiteKing = {WhiteKingPosX(cb) + 1, 8 - WhiteKingPosY(cb), Colour::White, PieceType::King};
@@ -279,11 +290,11 @@ bool ChessBoard::isWhiteCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
+            break;
         }
     }
     // Scan vertically down
     for (int i = 0; i < 8 - WhiteKingPosY(cb) - 1; ++i) {
-        std::cout << "down" << std::endl;
         if (cb.chessBoard[WhiteKingPosY(cb) + i + 1][WhiteKingPosX(cb)].p != PieceType::NoPiece) {
             Tile Encounter = {cb.chessBoard[WhiteKingPosY(cb) + i + 1][WhiteKingPosX(cb)].alphabet, cb.chessBoard[WhiteKingPosY(cb) + i + 1][WhiteKingPosX(cb)].num, cb.chessBoard[WhiteKingPosY(cb) + i + 1][WhiteKingPosX(cb)].c, cb.chessBoard[WhiteKingPosY(cb) + i + 1][WhiteKingPosX(cb)].p};
             Tile WhiteKing = {WhiteKingPosX(cb) + 1, 8 - WhiteKingPosY(cb), Colour::White, PieceType::King};
@@ -294,11 +305,11 @@ bool ChessBoard::isWhiteCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
+            break;
         }
     }
     // Scan horizontally right
     for (int i = 0; i < 8 - WhiteKingPosX(cb) - 1; ++i) {
-        std::cout << "right" << std::endl;
         if (cb.chessBoard[WhiteKingPosY(cb)][WhiteKingPosX(cb)+i+1].p != PieceType::NoPiece) {
             Tile Encounter = {cb.chessBoard[WhiteKingPosY(cb)][WhiteKingPosX(cb)+i+1].alphabet, cb.chessBoard[WhiteKingPosY(cb)][WhiteKingPosX(cb)+i+1].num, cb.chessBoard[WhiteKingPosY(cb)][WhiteKingPosX(cb)+i+1].c, cb.chessBoard[WhiteKingPosY(cb)][WhiteKingPosX(cb)+i+1].p};
             Tile WhiteKing = {WhiteKingPosX(cb) + 1, 8 - WhiteKingPosY(cb), Colour::White, PieceType::King};
@@ -309,11 +320,11 @@ bool ChessBoard::isWhiteCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
+            break;
         }
     }
     // Scan horizontally left
     for (int i = 0; i < WhiteKingPosX(cb); ++i) {
-        std::cout << "left" << std::endl;
         if (cb.chessBoard[WhiteKingPosY(cb)][WhiteKingPosX(cb)-i-1].p != PieceType::NoPiece) {
             Tile Encounter = {cb.chessBoard[WhiteKingPosY(cb)][WhiteKingPosX(cb)-i-1].alphabet, cb.chessBoard[WhiteKingPosY(cb)][WhiteKingPosX(cb)-i-1].num, cb.chessBoard[WhiteKingPosY(cb)][WhiteKingPosX(cb)-i-1].c, cb.chessBoard[WhiteKingPosY(cb)][WhiteKingPosX(cb)-i-1].p};
             Tile WhiteKing = {WhiteKingPosX(cb) + 1, 8 - WhiteKingPosY(cb), Colour::White, PieceType::King};
@@ -324,11 +335,11 @@ bool ChessBoard::isWhiteCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
+            break;
         }
     } 
     // Scan Diagonal Path Up Right
     for (int i = 0; i < std::min(WhiteKingPosY(cb), 8 - WhiteKingPosX(cb) -1); ++i) {
-        std::cout << "up right" << std::endl;
         if (cb.chessBoard[WhiteKingPosY(cb)-i-1][WhiteKingPosX(cb)+i+1].p != PieceType::NoPiece) {
             Tile Encounter = {cb.chessBoard[WhiteKingPosY(cb)-i-1][WhiteKingPosX(cb)+i+1].alphabet, cb.chessBoard[WhiteKingPosY(cb)-i-1][WhiteKingPosX(cb)+i+1].num, cb.chessBoard[WhiteKingPosY(cb)-i-1][WhiteKingPosX(cb)+i+1].c, cb.chessBoard[WhiteKingPosY(cb)-i-1][WhiteKingPosX(cb)+i+1].p};
             Tile WhiteKing = {WhiteKingPosX(cb) + 1, 8 - WhiteKingPosY(cb), Colour::White, PieceType::King};
@@ -339,60 +350,52 @@ bool ChessBoard::isWhiteCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
+            break;
         }
     }
     // Scan Diagonal Path Down Left
     for (int i = 0; i < std::min(WhiteKingPosX(cb), 8 - WhiteKingPosY(cb) - 1); ++i) {
-        std::cout << "first" << std::endl;
         if (cb.chessBoard[WhiteKingPosY(cb)+i+1][WhiteKingPosX(cb)-i-1].p != PieceType::NoPiece) {
-            std::cout << "second" << std::endl;
             Tile Encounter = {cb.chessBoard[WhiteKingPosY(cb)+i+1][WhiteKingPosX(cb)-i-1].alphabet, cb.chessBoard[WhiteKingPosY(cb)+i+1][WhiteKingPosX(cb)-i-1].num, cb.chessBoard[WhiteKingPosY(cb)+i+1][WhiteKingPosX(cb)-i-1].c, cb.chessBoard[WhiteKingPosY(cb)+i+1][WhiteKingPosX(cb)-i-1].p};
             Tile WhiteKing = {WhiteKingPosX(cb) + 1, 8 - WhiteKingPosY(cb), Colour::White, PieceType::King};
-            std::cout << IsLegal(Encounter, WhiteKing, cb) << " " << IsValid(Encounter, WhiteKing, cb) << std::endl;
             if (IsLegal(Encounter, WhiteKing, cb) && IsValid(Encounter, WhiteKing, cb)) {
-                std::cout << "third" << std::endl;
                 Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
                 Tile temp2 = {x2, y2, t1.c, t1.p};
                 cb.chessBoard[8 - y1][x1 - 1] = temp2;
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
+            break;
         }
     }
     // Scan Diagonal Path Down Right
     for (int i = 0; i < std::min(8 - WhiteKingPosY(cb) - 1, 8 - WhiteKingPosX(cb) - 1) ; ++i) {
-        std::cout << "first" << std::endl;
         if (cb.chessBoard[WhiteKingPosY(cb)+i+1][WhiteKingPosX(cb)+i+1].p != PieceType::NoPiece) {
-            std::cout << "second" << std::endl;
             Tile Encounter = {cb.chessBoard[WhiteKingPosY(cb)+i+1][WhiteKingPosX(cb)+i+1].alphabet, cb.chessBoard[WhiteKingPosY(cb)+i+1][WhiteKingPosX(cb)+i+1].num, cb.chessBoard[WhiteKingPosY(cb)+i+1][WhiteKingPosX(cb)+i+1].c, cb.chessBoard[WhiteKingPosY(cb)+i+1][WhiteKingPosX(cb)+i+1].p};
             Tile WhiteKing = {WhiteKingPosX(cb) + 1, 8 - WhiteKingPosY(cb), Colour::White, PieceType::King};
-            std::cout << IsLegal(Encounter, WhiteKing, cb) << " " << IsValid(Encounter, WhiteKing, cb) << std::endl;
             if (IsLegal(Encounter, WhiteKing, cb) && IsValid(Encounter, WhiteKing, cb)) {
-                std::cout << "third" << std::endl;
                 Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
                 Tile temp2 = {x2, y2, t1.c, t1.p};
                 cb.chessBoard[8 - y1][x1 - 1] = temp2;
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
+            break;
         }
     }
     // Scan Diagonal Path Up Left
     for (int i = 0; i < std::min(WhiteKingPosX(cb), WhiteKingPosY(cb)); ++i) {
-        std::cout << "first" << std::endl;
         if (cb.chessBoard[WhiteKingPosY(cb)-i-1][WhiteKingPosX(cb)-i-1].p != PieceType::NoPiece) {
-            std::cout << "second" << std::endl;
             Tile Encounter = {cb.chessBoard[WhiteKingPosY(cb)-i-1][WhiteKingPosX(cb)-i-1].alphabet, cb.chessBoard[WhiteKingPosY(cb)-i-1][WhiteKingPosX(cb)-i-1].num, cb.chessBoard[WhiteKingPosY(cb)-i-1][WhiteKingPosX(cb)-i-1].c, cb.chessBoard[WhiteKingPosY(cb)-i-1][WhiteKingPosX(cb)-i-1].p};
             Tile WhiteKing = {WhiteKingPosX(cb) + 1, 8 - WhiteKingPosY(cb), Colour::White, PieceType::King};
-            std::cout << IsLegal(Encounter, WhiteKing, cb) << " " << IsValid(Encounter, WhiteKing, cb) << std::endl;
             if (IsLegal(Encounter, WhiteKing, cb) && IsValid(Encounter, WhiteKing, cb)) {
-                std::cout << "third" << std::endl;
                 Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
                 Tile temp2 = {x2, y2, t1.c, t1.p};
                 cb.chessBoard[8 - y1][x1 - 1] = temp2;
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
+            break;
         }
     } 
     // Scan Knight Path
@@ -879,28 +882,28 @@ bool ChessBoard::isWhiteCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
                 return true;
             }
         } else {
-            if (cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) - 1].c == Colour::Black) {
+            if (cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) + 1].c == Colour::Black) {
                 Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
                 Tile temp2 = {x2, y2, t1.c, t1.p};
                 cb.chessBoard[8 - y1][x1 - 1] = temp2;
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
-            if (cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 2][WhiteKingPosX(cb) + 1].c == Colour::Black) {
+            if (cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) + 2].c == Colour::Black) {
                 Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
                 Tile temp2 = {x2, y2, t1.c, t1.p};
                 cb.chessBoard[8 - y1][x1 - 1] = temp2;
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
-            if (cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) - 1][WhiteKingPosX(cb) + 2].c == Colour::Black) {
+            if (cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) + 2].c == Colour::Black) {
                 Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
                 Tile temp2 = {x2, y2, t1.c, t1.p};
                 cb.chessBoard[8 - y1][x1 - 1] = temp2;
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
-            if (cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 1][WhiteKingPosX(cb) + 2].c == Colour::Black) {
+            if (cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[WhiteKingPosY(cb) + 2][WhiteKingPosX(cb) + 1].c == Colour::Black) {
                 Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
                 Tile temp2 = {x2, y2, t1.c, t1.p};
                 cb.chessBoard[8 - y1][x1 - 1] = temp2;
@@ -1161,6 +1164,7 @@ bool ChessBoard::isBlackCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
+            break;
         }
     }
     // Scan vertically down
@@ -1176,6 +1180,7 @@ bool ChessBoard::isBlackCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
+            break;
         }
     }
     // Scan horizontally right
@@ -1191,6 +1196,7 @@ bool ChessBoard::isBlackCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
+            break;
         }
     }
     // Scan horizontally left
@@ -1206,6 +1212,7 @@ bool ChessBoard::isBlackCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
+            break;
         }
     } 
     // Scan Diagonal Path Up Right
@@ -1221,6 +1228,7 @@ bool ChessBoard::isBlackCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
+            break;
         }
     }
     // Scan Diagonal Path Down Left
@@ -1239,6 +1247,7 @@ bool ChessBoard::isBlackCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
+            break;
         }
     }
     // Scan Diagonal Path Down Right
@@ -1257,6 +1266,7 @@ bool ChessBoard::isBlackCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
+            break;
         }
     }
     // Scan Diagonal Path Up Left
@@ -1275,9 +1285,10 @@ bool ChessBoard::isBlackCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
+            break;
         }
     } 
-    // Scan Knight Path
+    // Scan Knight Path 
     if (BlackKingPosX(cb) == 7) {
         // y alternating, x is 7
         if (BlackKingPosY(cb) == 0) {
@@ -1761,28 +1772,28 @@ bool ChessBoard::isBlackCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
                 return true;
             }
         } else {
-            if (cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) - 1].c == Colour::White) {
+            if (cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) + 1].c == Colour::White) {
                 Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
                 Tile temp2 = {x2, y2, t1.c, t1.p};
                 cb.chessBoard[8 - y1][x1 - 1] = temp2;
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
-            if (cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 2][BlackKingPosX(cb) + 1].c == Colour::White) {
+            if (cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) + 2].c == Colour::White) {
                 Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
                 Tile temp2 = {x2, y2, t1.c, t1.p};
                 cb.chessBoard[8 - y1][x1 - 1] = temp2;
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
-            if (cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) - 1][BlackKingPosX(cb) + 2].c == Colour::White) {
+            if (cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) + 2].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) + 2].c == Colour::White) {
                 Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
                 Tile temp2 = {x2, y2, t1.c, t1.p};
                 cb.chessBoard[8 - y1][x1 - 1] = temp2;
                 cb.chessBoard[8 - y2][x2 - 1] = temp1;
                 return true;
             }
-            if (cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 1][BlackKingPosX(cb) + 2].c == Colour::White) {
+            if (cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) + 1].p ==  PieceType::Knight && cb.chessBoard[BlackKingPosY(cb) + 2][BlackKingPosX(cb) + 1].c == Colour::White) {
                 Tile temp1 = {x1, y1, Colour::NoColour, PieceType::NoPiece};
                 Tile temp2 = {x2, y2, t1.c, t1.p};
                 cb.chessBoard[8 - y1][x1 - 1] = temp2;
@@ -1996,7 +2007,6 @@ bool ChessBoard::isBlackCheck(ChessBoard &cb, Tile t1, Tile t2, std::vector <std
     } 
     return false;
 }
-
 
 bool IsLegal(Tile t1, Tile t2, ChessBoard &cb) {
     if (t1.alphabet > 8 || t2.alphabet > 8 || t1.num > 8 || t2.num > 8 || t1.alphabet < 1 || t2.alphabet < 1 || t1.num < 1 || t2.num < 1) {

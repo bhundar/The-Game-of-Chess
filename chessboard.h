@@ -4,12 +4,14 @@
 #include "piece.h"
 #include "tile.h"
 #include "info.h"
+//#include "graphicsdisplay.h"
 #include <vector>
 #include <cstdlib>
 #include <algorithm>
 
 class ChessBoard: public Game {
     const int boardSize = 8;
+    //GraphicsDisplay * gd;
     public:
         bool hasPawnMovedTwice = false;
         bool castlingWhiteAllowedRight = true;
