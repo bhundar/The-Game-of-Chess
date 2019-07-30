@@ -578,9 +578,12 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
         if (colour == "white") {
             cout << "white" << endl;
             isWhiteTurn = false;
+            cout << turn << endl;
+            vector <randInfo> whitePieces;
             while (true) {
                 if (turn % 2 != 0) {
                     if (cLevel1 == 1) {
+                        cout << "level1" << endl;
                         for (int i = 0; i < 8; ++i) {
                             try {
                                 for (int j = 0; j < 8; ++j) {
@@ -602,6 +605,33 @@ void playWithComputer(ChessBoard &cb, string colour, int cLevel1, int cLevel2, b
                             if (foundPiece) {
                                 foundPiece = false;
                                 break;
+                            }
+                        }
+                    } else if (cLevel1 == 2) {
+                        cout << "here" << endl;
+                        whitePieces.clear();
+                        for (int i = 0; i < 8; ++ i) {
+                            for (int j = 0; j < 8; ++j) {
+                                if (cb.chessBoard[i][j].c == Colour::White) {
+                                    randInfo ri = {i, j, cb.chessBoard[i][j].p};
+                                    whitePieces.emplace_back(ri);
+                                }
+                            }
+                        }
+                        int rn = rand() % (whitePieces.size() - 1);
+                        cout << "RANDOM NUMBER GENERATED: " << rn << endl;
+                        randInfo TrialPieceToMove = whitePieces[rn];
+                        bool hasItBeenFoundYet = false;
+                        while (!hasItBeenFoundYet) {
+                            try {
+                                cout << TrialPieceToMove.i << " " << TrialPieceToMove.j << endl;
+                                findAndMove(cb, TrialPieceToMove.i, TrialPieceToMove.j, Colour::White, TrialPieceToMove.p, inputVector);
+                                hasItBeenFoundYet = true;
+                                if (foundPiece) {
+                                    foundPiece = false;
+                                }
+                            } catch (std::exception &e) {
+                                continue;
                             }
                         }
                     }
